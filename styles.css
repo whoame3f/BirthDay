@@ -479,7 +479,7 @@ body {
     border: 1px solid var(--card-border);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-glow), inset 0 0 50px rgba(0, 0, 0, 0.5);
-    overflow: hidden;
+    overflow: visible; /* ALLOW 3D FLIPPING SHEET TO BREAK OUTSIDE TOP/BOTTOM BOOK BORDER LINES */
     transform-style: preserve-3d;
     z-index: 10;
 }
