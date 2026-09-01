@@ -289,7 +289,7 @@ class PhysicalBookController {
                 this.activateChapterSection(targetChapter);
                 sheet.classList.remove('active-flip-forward', 'active-flip-backward');
                 this.isFlipping = false;
-            }, 850);
+            }, 950);
         } else {
             this.activateChapterSection(targetChapter);
         }

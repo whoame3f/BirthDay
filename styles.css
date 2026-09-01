@@ -498,7 +498,7 @@ body {
 }
 
 /* ==========================================================================
-   5. REAL HAND-LIFTED 3D PAPER PAGE FLIP ENGINE
+   5. REAL HAND-LIFTED 3D PAPER PAGE FLIP ENGINE (ULTRA SMOOTH PHYSICS)
    ========================================================================== */
 .flipping-sheet-3d {
     position: absolute;
@@ -517,62 +517,83 @@ body {
 .flipping-sheet-3d.active-flip-forward {
     display: block !important;
     visibility: visible !important;
-    animation: paperFlipForward 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    animation: paperFlipForward 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .flipping-sheet-3d.active-flip-backward {
     display: block !important;
     visibility: visible !important;
-    animation: paperFlipBackward 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    animation: paperFlipBackward 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Real Hand-Lifted 3D Paper Flip Animation Curves */
+/* Real Hand-Lifted 3D Paper Flip Animation Curves (Organic Bezier & Light Sheen) */
 @keyframes paperFlipForward {
     0% {
-        transform: rotateY(0deg) translateZ(0px) rotateZ(0deg) scale(1);
-        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        transform: rotateY(0deg) translateZ(0px) rotateZ(0deg) skewY(0deg) scale(1);
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        filter: brightness(1);
     }
-    30% {
-        /* Hand grabs paper edge & lifts it UP towards user in 3D space */
-        transform: rotateY(-50deg) translateZ(75px) rotateZ(-4deg) scale(1.03);
-        box-shadow: -30px 25px 50px rgba(0,0,0,0.5);
+    20% {
+        /* Hand lifts page corner up off the stack */
+        transform: rotateY(-30deg) translateZ(55px) rotateZ(-3deg) skewY(-2deg) scale(1.02);
+        box-shadow: -20px 20px 35px rgba(0, 0, 0, 0.35);
+        filter: brightness(1.06);
     }
-    60% {
-        /* Paper curves vertically through air */
-        transform: rotateY(-110deg) translateZ(80px) rotateZ(3deg) scale(1.03);
-        box-shadow: 30px 25px 50px rgba(0,0,0,0.5);
+    45% {
+        /* High 3D arch over spine with light sheen reflection */
+        transform: rotateY(-85deg) translateZ(95px) rotateZ(-5deg) skewY(-1deg) scale(1.04);
+        box-shadow: -35px 30px 60px rgba(0, 0, 0, 0.5);
+        filter: brightness(1.15);
     }
-    85% {
-        /* Paper settles gently down onto left stack */
-        transform: rotateY(-165deg) translateZ(20px) rotateZ(0deg) scale(1.005);
-        box-shadow: 10px 10px 20px rgba(0,0,0,0.2);
+    70% {
+        /* Glides down towards left stack */
+        transform: rotateY(-140deg) translateZ(60px) rotateZ(2deg) skewY(1deg) scale(1.02);
+        box-shadow: 25px 25px 45px rgba(0, 0, 0, 0.4);
+        filter: brightness(1.06);
+    }
+    90% {
+        /* Soft cushion contact landing */
+        transform: rotateY(-175deg) translateZ(12px) rotateZ(0.5deg) skewY(0deg) scale(1.005);
+        box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.2);
+        filter: brightness(1);
     }
     100% {
-        transform: rotateY(-180deg) translateZ(0px) rotateZ(0deg) scale(1);
-        box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        transform: rotateY(-180deg) translateZ(0px) rotateZ(0deg) skewY(0deg) scale(1);
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        filter: brightness(1);
     }
 }
 
 @keyframes paperFlipBackward {
     0% {
-        transform: rotateY(-180deg) translateZ(0px) rotateZ(0deg) scale(1);
-        box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+        transform: rotateY(-180deg) translateZ(0px) rotateZ(0deg) skewY(0deg) scale(1);
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+        filter: brightness(1);
     }
-    30% {
-        transform: rotateY(-130deg) translateZ(75px) rotateZ(4deg) scale(1.03);
-        box-shadow: 30px 25px 50px rgba(0,0,0,0.5);
+    20% {
+        transform: rotateY(-150deg) translateZ(55px) rotateZ(3deg) skewY(2deg) scale(1.02);
+        box-shadow: 20px 20px 35px rgba(0, 0, 0, 0.35);
+        filter: brightness(1.06);
     }
-    60% {
-        transform: rotateY(-70deg) translateZ(80px) rotateZ(-3deg) scale(1.03);
-        box-shadow: -30px 25px 50px rgba(0,0,0,0.5);
+    45% {
+        transform: rotateY(-95deg) translateZ(95px) rotateZ(5deg) skewY(1deg) scale(1.04);
+        box-shadow: 35px 30px 60px rgba(0, 0, 0, 0.5);
+        filter: brightness(1.15);
     }
-    85% {
-        transform: rotateY(-15deg) translateZ(20px) rotateZ(0deg) scale(1.005);
-        box-shadow: -10px 10px 20px rgba(0,0,0,0.2);
+    70% {
+        transform: rotateY(-40deg) translateZ(60px) rotateZ(-2deg) skewY(-1deg) scale(1.02);
+        box-shadow: -25px 25px 45px rgba(0, 0, 0, 0.4);
+        filter: brightness(1.06);
+    }
+    90% {
+        transform: rotateY(-5deg) translateZ(12px) rotateZ(-0.5deg) skewY(0deg) scale(1.005);
+        box-shadow: -8px 8px 15px rgba(0, 0, 0, 0.2);
+        filter: brightness(1);
     }
     100% {
-        transform: rotateY(0deg) translateZ(0px) rotateZ(0deg) scale(1);
-        box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        transform: rotateY(0deg) translateZ(0px) rotateZ(0deg) skewY(0deg) scale(1);
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        filter: brightness(1);
     }
 }
 
