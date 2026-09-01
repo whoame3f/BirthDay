@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Magical Birthday Diary & Gift Journey 🎁</title>
+    <meta name="description" content="An interactive 3D magical physical birthday diary featuring an enchanted package tracking journey.">
+    
+    <!-- Inline SVG Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎁</text></svg>">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Outfit:wght@300;400;500;600;700&family=Sacramento&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Fullscreen Ambient Particle Canvas -->
+    <canvas id="bgCanvas"></canvas>
+
+    <!-- Floating Top Action Bar -->
+    <div class="book-top-actions">
+        <button class="secret-seal-btn" id="secretToggleBtn" title="Toggle Secret Mode">
+            <span class="seal-icon">🤫</span>
+            <span class="seal-text">Secret Mode</span>
+        </button>
+        <div class="chapter-indicator-badge" id="chapterIndicator">
+            📖 Closed Book
+        </div>
+    </div>
+
+    <!-- MAIN 3D BOOK STAGE -->
+    <main class="book-stage" id="bookStage">
+        <div class="book-perspective-wrapper">
+            
+            <!-- 3D BOOK PHYSICAL OBJECT (Mouse Parallax Target) -->
+            <div class="book-3d-object" id="book3dObject">
+                
+                <!-- Table Shadow under the book -->
+                <div class="book-table-shadow" id="bookTableShadow"></div>
+
+                <!-- Physical Leather & Glossy Back Cover -->
+                <div class="book-cover-back-3d"></div>
+
+                <!-- Paper Stack Edges (Layered volume thickness) -->
+                <div class="paper-stack-left" id="paperStackLeft">
+                    <div class="paper-layer l1"></div>
+                    <div class="paper-layer l2"></div>
+                    <div class="paper-layer l3"></div>
+                </div>
+                <div class="paper-stack-right" id="paperStackRight">
+                    <div class="paper-layer r1"></div>
+                    <div class="paper-layer r2"></div>
+                    <div class="paper-layer r3"></div>
+                </div>
+
+                <!-- Center Spine Binding Anchor (Closed State Side Binding) -->
+                <div class="book-spine-3d" id="bookSpine3D">
+                    <div class="spine-texture"></div>
+                </div>
+
+                <!-- 3D HARDCOVER FRONT COVER (Pivots around spine left edge) -->
+                <div class="book-cover-front-3d" id="bookCoverFront3D">
+                    <div class="cover-front-face">
+                        <!-- Glossy Sheen Sweep Effect on Hover -->
+                        <div class="glossy-reflection-sheen"></div>
+                        
+                        <div class="cover-emboss-content">
+                            <div class="gold-emboss-border">
+                                <div class="magical-seal-icon">✨</div>
+                                <h1 class="cover-main-title">A Journey of Wishes & Stars</h1>
+                                <p class="cover-sub-title">Magical Birthday Storybook & Gift Journey</p>
+                                
+                                <div class="cover-gift-anim">
+                                    <div class="sparkle-ring"></div>
+                                    <span class="cover-gift-emoji">🎁</span>
+                                </div>
+
+                                <p class="cover-prompt">Touch the button to open your diary...</p>
+
+                                <!-- Opening Button with Glossy Tooltip -->
+                                <div class="btn-tooltip-wrapper">
+                                    <button class="open-book-btn" id="openBookBtn">
+                                        <span class="btn-stars">✨</span> OPEN THE DIARY ✨
+                                    </button>
+                                    <div class="neon-tooltip open-tooltip">Open your little story ✨</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cover-back-face">
+                        <div class="cover-inner-pattern"></div>
+                    </div>
+                </div>
+
+                <!-- SPREAD CONTAINER (Seamless 2-Page Interior Spread) -->
+                <div class="book-spread-container" id="bookSpreadContainer">
+                    
+                    <!-- Soft Natural Paper Spine Crease (No lines, no borders, ambient depth only) -->
+                    <div class="center-fold-binding" id="centerFoldBinding"></div>
+
+                    <!-- 3D REAL HAND-LIFTED DUAL-SIDED FLIPPING SHEET -->
+                    <div class="flipping-sheet-3d" id="flippingSheet3D">
+                        <div class="sheet-face sheet-front" id="sheetFront"></div>
+                        <div class="sheet-face sheet-back" id="sheetBack"></div>
+                        <div class="sheet-crease-shadow" id="sheetCreaseShadow"></div>
+                    </div>
+
+                    <!-- Side Navigation Arrows with Neon Pink Glossy Tooltips -->
+                    <div class="arrow-tooltip-wrapper prev-wrapper">
+                        <button class="page-side-arrow prev-side-arrow" id="prevSideArrow">
+                            <span class="arrow-icon">❮</span>
+                        </button>
+                        <div class="neon-tooltip arrow-tooltip">Go back ←</div>
+                    </div>
+
+                    <div class="arrow-tooltip-wrapper next-wrapper">
+                        <button class="page-side-arrow next-side-arrow" id="nextSideArrow">
+                            <span class="arrow-icon">❯</span>
+                        </button>
+                        <div class="neon-tooltip arrow-tooltip">Turn the page →</div>
+                    </div>
+
+                    <!-- SPREAD PAGE CONTENT LAYERS (Proper 2-Page Layouts) -->
+                    <div class="spread-pages-wrapper">
+                        
+                        <!-- CHAPTER 1: INTRO -->
+                        <article class="page-chapter active" id="chapter-1" data-chapter="1">
+                            <div class="spread-two-pages">
+                                <div class="page-half page-left">
+                                    <div class="chapter-badge">Intro</div>
+                                    <h2 class="chapter-heading">Welcome to Your Birthday Book 🌟</h2>
+                                    <div class="welcome-illustration">
+                                        <div class="floating-magic-box">🎁</div>
+                                    </div>
+                                </div>
+                                <div class="page-half page-right">
+                                    <p class="paragraph">
+                                        This diary was written to celebrate your special day. Turn the page to discover memories, flowers, interactive surprises, and your birthday gift journey!
+                                    </p>
+                                    <div class="action-center">
+                                        <button class="turn-page-btn" id="introNextBtn">Turn Page →</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- CHAPTER 2: STORY -->
+                        <article class="page-chapter" id="chapter-2" data-chapter="2">
+                            <div class="spread-two-pages">
+                                <div class="page-half page-left">
+                                    <div class="chapter-badge">Chapter 01</div>
+                                    <h2 class="chapter-heading">The Story of Another Beautiful Year 📜</h2>
+                                    <p class="paragraph">
+                                        Every second that ticks on the clock marks moments of laughter, growth, and precious memories made throughout this past year.
+                                    </p>
+                                </div>
+                                <div class="page-half page-right">
+                                    <blockquote class="magical-quote">
+                                        "May your day be filled with warm smiles, joyful hearts, and moments that stay with you forever."
+                                    </blockquote>
+                                    <p class="paragraph">
+                                        As you read through this diary, each page holds a little surprise created just to celebrate your birthday.
+                                    </p>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- CHAPTER 3: MEMORIES -->
+                        <article class="page-chapter" id="chapter-3" data-chapter="3">
+                            <div class="spread-two-pages">
+                                <div class="page-half page-left">
+                                    <div class="chapter-badge">Chapter 02</div>
+                                    <h2 class="chapter-heading">Precious Memories & Moments 🖼️</h2>
+                                    <div class="memory-card">
+                                        <div class="memory-icon">🌟</div>
+                                        <h3>First Spark</h3>
+                                        <p>Every journey begins with a single bright idea and happy memory.</p>
+                                    </div>
+                                </div>
+                                <div class="page-half page-right">
+                                    <div class="memory-card">
+                                        <div class="memory-icon">🌸</div>
+                                        <h3>Joyful Laughs</h3>
+                                        <p>Sharing simple moments that turn ordinary days into extraordinary memories.</p>
+                                    </div>
+                                    <div class="memory-card" style="margin-top: 1rem;">
+                                        <div class="memory-icon">💫</div>
+                                        <h3>Bright Dreams</h3>
+                                        <p>Looking forward to all the amazing milestones awaiting you this year.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- CHAPTER 4: TULIP GARDEN -->
+                        <article class="page-chapter" id="chapter-4" data-chapter="4">
+                            <div class="spread-two-pages">
+                                <div class="page-half page-left">
+                                    <div class="chapter-badge">Chapter 03</div>
+                                    <h2 class="chapter-heading">The Enchanted Tulip Garden 🌷</h2>
+                                    <p class="paragraph">
+                                        Tulips symbolize deep affection and fresh beginnings. Touch the garden to make flowers bloom!
+                                    </p>
+                                </div>
+                                <div class="page-half page-right">
+                                    <div class="tulip-canvas-container" id="tulipCanvasContainer">
+                                        <canvas id="tulipCanvas"></canvas>
+                                        <div class="garden-overlay-text">Tap anywhere to plant interactive glowing tulips!</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- CHAPTER 5: GIFT JOURNEY -->
+                        <article class="page-chapter" id="chapter-5" data-chapter="5">
+                            <div class="spread-two-pages">
+                                <div class="page-half page-left">
+                                    <div class="chapter-badge glow-badge">Chapter 04 • Birthday Gift</div>
+                                    <h2 class="journey-main-title">"While you're reading this..."</h2>
+                                    <p class="journey-sub-headline">There's a little surprise making its way to you.</p>
+
+                                    <!-- Secret Mode Overlay -->
+                                    <div class="secret-mode-overlay hidden" id="secretModeOverlay">
+                                        <div class="secret-card-inner">
+                                            <div class="secret-icon-anim">🤫✨</div>
+                                            <h3>Something special is on its way...</h3>
+                                            <p>The details of your birthday surprise are safely hidden in Secret Mode.</p>
+                                            <button class="action-btn glow-btn" id="revealSecretBtn">TRACK THE SURPRISE ✨</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tracking Details Info Box -->
+                                    <div class="info-details-card" id="trackingInfoCard">
+                                        <div class="info-group">
+                                            <span class="info-label">Order</span>
+                                            <span class="info-value highlight-val" id="infoOrder">Birthday Gift</span>
+                                        </div>
+                                        <div class="info-group">
+                                            <span class="info-label">Tracking Number</span>
+                                            <div class="tracking-num-wrapper">
+                                                <span class="info-value code-font" id="infoTrackingNum">SPX9284719283ID</span>
+                                                <button class="copy-btn" id="copyTrackingBtn" title="Copy Tracking Number">📋</button>
+                                            </div>
+                                        </div>
+                                        <div class="info-group">
+                                            <span class="info-label">Status</span>
+                                            <span class="info-value status-badge" id="infoCurrentStatus">OUT FOR DELIVERY</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="page-half page-right">
+                                    <div class="tracking-content-wrapper" id="trackingContentWrapper">
+                                        <!-- Countdown Card -->
+                                        <div class="countdown-card" id="countdownCard">
+                                            <div class="countdown-header">
+                                                <span class="clock-icon">⏳</span>
+                                                <span id="countdownLabelText">Arriving around...</span>
+                                            </div>
+                                            <div class="countdown-timer" id="countdownTimer">
+                                                <div class="time-block"><span id="cdDays">00</span><label>D</label></div>
+                                                <div class="time-colon">:</div>
+                                                <div class="time-block"><span id="cdHours">00</span><label>H</label></div>
+                                                <div class="time-colon">:</div>
+                                                <div class="time-block"><span id="cdMins">00</span><label>M</label></div>
+                                                <div class="time-colon">:</div>
+                                                <div class="time-block"><span id="cdSecs">00</span><label>S</label></div>
+                                            </div>
+                                            <div class="delivered-message hidden" id="deliveredMsg">
+                                                🎉 Package Delivered! 🎁
+                                            </div>
+                                        </div>
+
+                                        <!-- Mini Route Map -->
+                                        <div class="mini-map-container" id="miniMapContainer">
+                                            <div class="map-grid-bg"></div>
+                                            <canvas id="routeCanvas"></canvas>
+                                            
+                                            <!-- 3D Runner -->
+                                            <div class="package-3d-runner" id="package3dRunner">
+                                                <div class="package-box-inner" id="packageBoxInner">
+                                                    <span class="runner-icon" id="runnerIcon">📦</span>
+                                                </div>
+                                                <div class="package-shadow"></div>
+                                            </div>
+
+                                            <div class="map-checkpoints-layer">
+                                                <div class="map-node" style="left: 10%; top: 50%;" data-node="ORDER_PLACED"><div class="node-pin">📦</div></div>
+                                                <div class="map-node" style="left: 30%; top: 35%;" data-node="SELLER_PREPARING"><div class="node-pin">🏪</div></div>
+                                                <div class="map-node" style="left: 50%; top: 65%;" data-node="PACKAGE_PICKED_UP"><div class="node-pin">🚚</div></div>
+                                                <div class="map-node" style="left: 70%; top: 40%;" data-node="SORTING_CENTER"><div class="node-pin">📍</div></div>
+                                                <div class="map-node" style="left: 85%; top: 70%;" data-node="OUT_FOR_DELIVERY"><div class="node-pin">🛵</div></div>
+                                                <div class="map-node" style="left: 95%; top: 50%;" data-node="DELIVERED"><div class="node-pin">🏠</div></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Timeline Progress -->
+                                        <div class="timeline-container">
+                                            <h3 class="timeline-title">Journey Steps</h3>
+                                            <div class="timeline-list" id="timelineList"></div>
+                                        </div>
+
+                                        <!-- Fallback Error Card -->
+                                        <div class="fallback-error-card hidden" id="fallbackErrorCard">
+                                            <div class="error-sparkle">✨</div>
+                                            <h3 class="error-title">Gift on its way...</h3>
+                                            <button class="action-btn refresh-btn" id="refreshJourneyBtn">REFRESH 🔄</button>
+                                        </div>
+
+                                        <!-- Delivered Celebration Showcase -->
+                                        <div class="delivered-celebration-box hidden" id="deliveredCelebrationBox">
+                                            <canvas id="celebrationCanvas"></canvas>
+                                            <div class="celebration-content">
+                                                <div class="unboxed-gift">🌷🎂🎁</div>
+                                                <h3 class="celebration-title">The surprise has arrived! ❤️</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- CHAPTER 6: BIRTHDAY CAKE -->
+                        <article class="page-chapter" id="chapter-6" data-chapter="6">
+                            <div class="spread-two-pages">
+                                <div class="page-half page-left">
+                                    <div class="chapter-badge">Chapter 05</div>
+                                    <h2 class="chapter-heading">Make a Birthday Wish 🎂</h2>
+                                    <p class="paragraph">
+                                        Touch the candle flame to blow it out and make your special wish!
+                                    </p>
+                                    <div class="wish-toast hidden" id="wishToast">✨ May all your dreams come true! ✨</div>
+                                </div>
+                                <div class="page-half page-right">
+                                    <div class="cake-interactive-area" id="cakeInteractiveArea">
+                                        <div class="cake-visual">
+                                            <div class="candle-flame" id="candleFlame">🔥</div>
+                                            <div class="candle">🕯️</div>
+                                            <div class="cake-emoji">🎂</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- CHAPTER 7: BIRTHDAY MESSAGE -->
+                        <article class="page-chapter" id="chapter-7" data-chapter="7">
+                            <div class="spread-two-pages">
+                                <div class="page-half page-left">
+                                    <div class="chapter-badge">Chapter 06</div>
+                                    <h2 class="chapter-heading">A Special Birthday Message 💌</h2>
+                                    <div class="letter-container">
+                                        <p class="letter-heading">Dear Special Someone,</p>
+                                        <p class="letter-body">
+                                            On this wonderful day, I want to wish you endless happiness, beautiful adventures, peace, and good health.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="page-half page-right">
+                                    <div class="letter-container">
+                                        <p class="letter-body">
+                                            May your heart always stay as bright and warm as it is today. Thank you for bringing so much light into the world.
+                                        </p>
+                                        <p class="letter-closing">Happy Birthday! ❤️</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- CHAPTER 8: FINAL CELEBRATION -->
+                        <article class="page-chapter" id="chapter-8" data-chapter="8">
+                            <div class="spread-two-pages">
+                                <div class="page-half page-left">
+                                    <div class="chapter-badge glow-badge">Finale</div>
+                                    <h2 class="chapter-heading">Happy Birthday! 🎉</h2>
+                                    <div class="big-gift-icon">🎁✨</div>
+                                </div>
+                                <div class="page-half page-right final-card">
+                                    <p class="paragraph">Thank you for being part of this magical journey!</p>
+                                    <button class="action-btn celebrate-big-btn" id="finalCelebrateBtn">Release Sparkles & Confetti 🎉</button>
+                                </div>
+                            </div>
+                        </article>
+
+                    </div> <!-- End spread-pages-wrapper -->
+
+                    <!-- Page Footer Counter -->
+                    <div class="book-footer-bar">
+                        <span class="book-page-counter" id="pageCounter">Closed Book</span>
+                    </div>
+
+                </div> <!-- End book-spread-container -->
+
+            </div> <!-- End book-3d-object -->
+
+        </div> <!-- End book-perspective-wrapper -->
+    </main>
+
+    <!-- Notification Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="canvas-effects.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
