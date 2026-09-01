@@ -284,25 +284,13 @@ class PhysicalBookController {
         if (animate && sheet && sheetFront && sheetBack && currentChapterEl && targetChapterEl) {
             this.isFlipping = true;
 
-            // Clone dynamic page content onto the 3D flipping paper faces!
+            // Clone dynamic page content onto the 3D flipping paper faces (Far-Left Spine Axis Pivot)!
             if (isForward) {
-                // Forward Flip (Turning right page to left):
-                // sheetFront = Right page of current chapter (lifting off)
-                // sheetBack = Left page of target chapter (landing down)
-                const currentRightPage = currentChapterEl.querySelector('.page-right');
-                const targetLeftPage = targetChapterEl.querySelector('.page-left');
-
-                sheetFront.innerHTML = currentRightPage ? `<div class="sheet-content-wrapper">${currentRightPage.innerHTML}</div>` : '';
-                sheetBack.innerHTML = targetLeftPage ? `<div class="sheet-content-wrapper">${targetLeftPage.innerHTML}</div>` : '';
+                sheetFront.innerHTML = `<div class="sheet-content-wrapper">${currentChapterEl.innerHTML}</div>`;
+                sheetBack.innerHTML = `<div class="sheet-content-wrapper">${targetChapterEl.innerHTML}</div>`;
             } else {
-                // Backward Flip (Turning left page to right):
-                // sheetFront = Right page of target chapter (landing down)
-                // sheetBack = Left page of current chapter (lifting off)
-                const targetRightPage = targetChapterEl.querySelector('.page-right');
-                const currentLeftPage = currentChapterEl.querySelector('.page-left');
-
-                sheetFront.innerHTML = targetRightPage ? `<div class="sheet-content-wrapper">${targetRightPage.innerHTML}</div>` : '';
-                sheetBack.innerHTML = currentLeftPage ? `<div class="sheet-content-wrapper">${currentLeftPage.innerHTML}</div>` : '';
+                sheetFront.innerHTML = `<div class="sheet-content-wrapper">${targetChapterEl.innerHTML}</div>`;
+                sheetBack.innerHTML = `<div class="sheet-content-wrapper">${currentChapterEl.innerHTML}</div>`;
             }
 
             sheet.classList.remove('active-flip-forward', 'active-flip-backward');

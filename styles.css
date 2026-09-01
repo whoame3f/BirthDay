@@ -498,20 +498,20 @@ body {
 }
 
 /* ==========================================================================
-   5. REAL 3D PAPER PAGE FLIP ENGINE (60FPS GPU ACCELERATED)
+   5. REAL 3D PHYSICAL PAPER PAGE FLIP ENGINE (FAR-LEFT SPINE AXIS PIVOT)
    ========================================================================== */
 .flipping-sheet-3d {
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 50%;
-    width: 50%;
-    transform-origin: left center; /* Pivots from center spine hinge */
+    left: 0; /* FAR-LEFT SPINE AXIS AS HIGHLIGHTED BY USER */
+    width: 100%;
+    transform-origin: left center; /* PIVOTS FROM THE FAR-LEFT SPINE (.book-spine-3d) */
     transform-style: preserve-3d;
-    will-change: transform; /* GPU Compositor Layer Promotion */
+    will-change: transform; /* GPU Compositor Promotion */
     z-index: 40;
     pointer-events: none;
-    display: none; /* Only visible DURING page flip execution */
+    display: none;
     visibility: hidden;
 }
 
@@ -527,15 +527,15 @@ body {
     animation: paperFlipBackward 0.8s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
 }
 
-/* Silky Smooth 60fps GPU 3D Page Flip Keyframes */
+/* Silky Smooth 60fps GPU 3D Page Flip Keyframes from Far-Left Spine */
 @keyframes paperFlipForward {
     0% {
         transform: rotateY(0deg) translateZ(0px);
         box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
     }
     50% {
-        transform: rotateY(-90deg) translateZ(35px) scale(1.015);
-        box-shadow: 0px 25px 40px rgba(0, 0, 0, 0.45);
+        transform: rotateY(-90deg) translateZ(40px) scale(1.02);
+        box-shadow: -20px 25px 50px rgba(0, 0, 0, 0.5);
     }
     100% {
         transform: rotateY(-180deg) translateZ(0px);
@@ -549,8 +549,8 @@ body {
         box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
     }
     50% {
-        transform: rotateY(-90deg) translateZ(35px) scale(1.015);
-        box-shadow: 0px 25px 40px rgba(0, 0, 0, 0.45);
+        transform: rotateY(-90deg) translateZ(40px) scale(1.02);
+        box-shadow: -20px 25px 50px rgba(0, 0, 0, 0.5);
     }
     100% {
         transform: rotateY(0deg) translateZ(0px);
