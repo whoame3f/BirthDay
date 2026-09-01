@@ -305,21 +305,23 @@ class PhysicalBookController {
                 sheetBack.innerHTML = currentLeftPage ? `<div class="sheet-content-wrapper">${currentLeftPage.innerHTML}</div>` : '';
             }
 
-            // Immediately switch underlying chapter spread so background is ready underneath the paper flip
-            this.activateChapterSection(targetChapter);
-
             sheet.classList.remove('active-flip-forward', 'active-flip-backward');
             void sheet.offsetWidth; // Trigger reflow to restart CSS keyframe cleanly
 
             const animationClass = isForward ? 'active-flip-forward' : 'active-flip-backward';
             sheet.classList.add(animationClass);
 
+            // Switch underlying chapter spread halfway through flip (375ms) when sheet is vertical at 90deg!
+            setTimeout(() => {
+                this.activateChapterSection(targetChapter);
+            }, 375);
+
             setTimeout(() => {
                 sheet.classList.remove('active-flip-forward', 'active-flip-backward');
                 sheetFront.innerHTML = '';
                 sheetBack.innerHTML = '';
                 this.isFlipping = false;
-            }, 850);
+            }, 750);
         } else {
             this.activateChapterSection(targetChapter);
         }
