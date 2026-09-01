@@ -527,46 +527,46 @@ body {
     animation: paperFlipBackward 0.85s cubic-bezier(0.25, 1, 0.35, 1) forwards;
 }
 
-/* Prominent 60fps Hand-Lifted 3D Paper Flip Keyframes */
+/* Ultra-Dramatic 60fps 3D/4D Popped-Up Hand-Lifted Paper Flip Keyframes */
 @keyframes paperFlipForward {
     0% {
-        transform: rotateY(0deg) translateZ(0px) rotateZ(0deg) scale(1);
+        transform: rotateY(0deg) translateY(0px) translateZ(0px) rotateX(0deg) rotateZ(0deg) scale(1);
         box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
     }
     35% {
-        /* Hand lifts page up high towards camera with organic tilt */
-        transform: rotateY(-55deg) translateZ(90px) rotateZ(-2.5deg) scale(1.04);
-        box-shadow: -35px 35px 65px rgba(0, 0, 0, 0.6);
+        /* Page surges UPWARDS and OUTWARDS towards viewer's face */
+        transform: rotateY(-55deg) translateY(-50px) translateZ(170px) rotateX(10deg) rotateZ(-3.5deg) scale(1.08);
+        box-shadow: -45px 45px 85px rgba(0, 0, 0, 0.7);
     }
     70% {
-        /* Page arcs smoothly across spine */
-        transform: rotateY(-130deg) translateZ(70px) rotateZ(1.5deg) scale(1.03);
-        box-shadow: 35px 30px 55px rgba(0, 0, 0, 0.55);
+        /* Page arcs smoothly across spine, descending back down */
+        transform: rotateY(-130deg) translateY(-30px) translateZ(120px) rotateX(-5deg) rotateZ(2deg) scale(1.05);
+        box-shadow: 45px 40px 75px rgba(0, 0, 0, 0.65);
     }
     100% {
         /* Page settles flat */
-        transform: rotateY(-180deg) translateZ(0px) rotateZ(0deg) scale(1);
+        transform: rotateY(-180deg) translateY(0px) translateZ(0px) rotateX(0deg) rotateZ(0deg) scale(1);
         box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
     }
 }
 
 @keyframes paperFlipBackward {
     0% {
-        transform: rotateY(-180deg) translateZ(0px) rotateZ(0deg) scale(1);
+        transform: rotateY(-180deg) translateY(0px) translateZ(0px) rotateX(0deg) rotateZ(0deg) scale(1);
         box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
     }
     35% {
-        /* Hand lifts page up high off left stack towards camera */
-        transform: rotateY(-125deg) translateZ(90px) rotateZ(2.5deg) scale(1.04);
-        box-shadow: 35px 35px 65px rgba(0, 0, 0, 0.6);
+        /* Page surges UPWARDS and OUTWARDS towards viewer's face */
+        transform: rotateY(-125deg) translateY(-50px) translateZ(170px) rotateX(10deg) rotateZ(3.5deg) scale(1.08);
+        box-shadow: 45px 45px 85px rgba(0, 0, 0, 0.7);
     }
     70% {
-        /* Page arcs smoothly back right */
-        transform: rotateY(-50deg) translateZ(70px) rotateZ(-1.5deg) scale(1.03);
-        box-shadow: -35px 30px 55px rgba(0, 0, 0, 0.55);
+        /* Page arcs smoothly back right, descending back down */
+        transform: rotateY(-50deg) translateY(-30px) translateZ(120px) rotateX(-5deg) rotateZ(-2deg) scale(1.05);
+        box-shadow: -45px 40px 75px rgba(0, 0, 0, 0.65);
     }
     100% {
-        transform: rotateY(0deg) translateZ(0px) rotateZ(0deg) scale(1);
+        transform: rotateY(0deg) translateY(0px) translateZ(0px) rotateX(0deg) rotateZ(0deg) scale(1);
         box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
     }
 }
