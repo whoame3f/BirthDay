@@ -284,18 +284,27 @@ class PhysicalBookController {
         if (animate && sheet && sheetFront && sheetBack && currentChapterEl && targetChapterEl) {
             this.isFlipping = true;
 
-            // Assign paper face content matching physical 3D rotation geometry!
+            // 1. Assign turning page content to active face & blank default paper texture to reverse face
             if (isForward) {
-                // Forward Flip (Right stack -> Left stack):
-                // sheetFront faces user as page lifts off right stack
+                // Forward Flip: sheetFront = current chapter, sheetBack = blank default paper
                 sheetFront.innerHTML = `<div class="sheet-content-wrapper">${currentChapterEl.innerHTML}</div>`;
-                sheetBack.innerHTML = `<div class="sheet-content-wrapper">${targetChapterEl.innerHTML}</div>`;
+                sheetBack.innerHTML = `
+                    <div class="blank-paper-back">
+                        <div class="paper-watermark">✨</div>
+                    </div>
+                `;
             } else {
-                // Backward Flip (Left stack -> Right stack):
-                // sheetBack faces user as page lifts off left stack
+                // Backward Flip: sheetBack = current chapter, sheetFront = blank default paper
                 sheetBack.innerHTML = `<div class="sheet-content-wrapper">${currentChapterEl.innerHTML}</div>`;
-                sheetFront.innerHTML = `<div class="sheet-content-wrapper">${targetChapterEl.innerHTML}</div>`;
+                sheetFront.innerHTML = `
+                    <div class="blank-paper-back">
+                        <div class="paper-watermark">✨</div>
+                    </div>
+                `;
             }
+
+            // 2. Immediately reveal target chapter on the underlying page stage at 0ms!
+            this.activateChapterSection(targetChapter);
 
             sheet.classList.remove('active-flip-forward', 'active-flip-backward');
             void sheet.offsetWidth; // Trigger reflow to restart CSS keyframe cleanly
@@ -303,11 +312,7 @@ class PhysicalBookController {
             const animationClass = isForward ? 'active-flip-forward' : 'active-flip-backward';
             sheet.classList.add(animationClass);
 
-            // Switch underlying chapter stage at 400ms (mid-flip) when sheet stands vertical at 90deg!
-            setTimeout(() => {
-                this.activateChapterSection(targetChapter);
-            }, 400);
-
+            // 3. Stutter-free 60fps GPU completion cleanup
             setTimeout(() => {
                 sheet.classList.remove('active-flip-forward', 'active-flip-backward');
                 sheetFront.innerHTML = '';
