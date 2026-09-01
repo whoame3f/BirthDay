@@ -178,7 +178,7 @@ body {
     background: linear-gradient(135deg, #1b122e, #0c0817);
     border-left: 2px solid var(--accent-gold);
     border-radius: 8px 0 0 8px;
-    z-index: 100; /* ALWAYS HIGHEST Z-INDEX SO SPINE BINDING STAYS CLEANLY ON TOP OF LEFT EDGE */
+    z-index: 5; /* POSITIONED BEHIND FLIPPING SHEET (z-index: 50) SO TURNED PAPER COVERS THE GOLD SPINE LINE */
     box-shadow: -4px 0 15px rgba(0, 0, 0, 0.8), inset 0 0 10px rgba(157, 78, 221, 0.3);
 }
 
