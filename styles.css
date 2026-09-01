@@ -575,8 +575,25 @@ body {
 }
 
 .sheet-back {
-    border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+    border-radius: var(--radius-lg);
     transform: rotateY(180deg);
+    background: radial-gradient(circle at center, rgba(25, 19, 46, 0.99) 0%, rgba(12, 9, 24, 0.99) 100%);
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.6);
+}
+
+.blank-paper-back {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.25;
+    pointer-events: none;
+}
+
+.paper-watermark {
+    font-size: 4rem;
+    animation: rotateSlow 20s linear infinite;
 }
 
 .sheet-content-wrapper {
