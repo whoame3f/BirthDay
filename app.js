@@ -311,17 +311,17 @@ class PhysicalBookController {
             const animationClass = isForward ? 'active-flip-forward' : 'active-flip-backward';
             sheet.classList.add(animationClass);
 
-            // Switch underlying chapter spread halfway through flip (375ms) when sheet is vertical at 90deg!
+            // Switch underlying chapter spread halfway through flip (400ms) when sheet is vertical at 90deg!
             setTimeout(() => {
                 this.activateChapterSection(targetChapter);
-            }, 375);
+            }, 400);
 
             setTimeout(() => {
                 sheet.classList.remove('active-flip-forward', 'active-flip-backward');
                 sheetFront.innerHTML = '';
                 sheetBack.innerHTML = '';
                 this.isFlipping = false;
-            }, 750);
+            }, 800);
         } else {
             this.activateChapterSection(targetChapter);
         }
