@@ -284,21 +284,28 @@ class PhysicalBookController {
         if (animate && sheet && sheetFront && sheetBack && currentChapterEl && targetChapterEl) {
             this.isFlipping = true;
 
-            // 1. sheetFront gets the current turning page content lifting off the stack
+            // Assign paper face content matching physical 3D rotation geometry!
             if (isForward) {
+                // Forward Flip (Right stack -> Left stack):
+                // sheetFront faces user as page lifts off right stack
                 sheetFront.innerHTML = `<div class="sheet-content-wrapper">${currentChapterEl.innerHTML}</div>`;
+                sheetBack.innerHTML = `
+                    <div class="blank-paper-back">
+                        <div class="paper-watermark">✨</div>
+                    </div>
+                `;
             } else {
-                sheetFront.innerHTML = `<div class="sheet-content-wrapper">${targetChapterEl.innerHTML}</div>`;
+                // Backward Flip (Left stack -> Right stack):
+                // sheetBack faces user as page lifts off left stack
+                sheetBack.innerHTML = `<div class="sheet-content-wrapper">${currentChapterEl.innerHTML}</div>`;
+                sheetFront.innerHTML = `
+                    <div class="blank-paper-back">
+                        <div class="paper-watermark">✨</div>
+                    </div>
+                `;
             }
 
-            // 2. sheetBack is the default blank paper back side (no text duplication)
-            sheetBack.innerHTML = `
-                <div class="blank-paper-back">
-                    <div class="paper-watermark">✨</div>
-                </div>
-            `;
-
-            // 3. Immediately reveal target chapter on the page stack underneath at the start of the flip!
+            // Immediately reveal target chapter on the page stage underneath at 0ms!
             this.activateChapterSection(targetChapter);
 
             sheet.classList.remove('active-flip-forward', 'active-flip-backward');
