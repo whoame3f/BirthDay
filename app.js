@@ -289,24 +289,13 @@ class PhysicalBookController {
                 // Forward Flip (Right stack -> Left stack):
                 // sheetFront faces user as page lifts off right stack
                 sheetFront.innerHTML = `<div class="sheet-content-wrapper">${currentChapterEl.innerHTML}</div>`;
-                sheetBack.innerHTML = `
-                    <div class="blank-paper-back">
-                        <div class="paper-watermark">✨</div>
-                    </div>
-                `;
+                sheetBack.innerHTML = `<div class="sheet-content-wrapper">${targetChapterEl.innerHTML}</div>`;
             } else {
                 // Backward Flip (Left stack -> Right stack):
                 // sheetBack faces user as page lifts off left stack
                 sheetBack.innerHTML = `<div class="sheet-content-wrapper">${currentChapterEl.innerHTML}</div>`;
-                sheetFront.innerHTML = `
-                    <div class="blank-paper-back">
-                        <div class="paper-watermark">✨</div>
-                    </div>
-                `;
+                sheetFront.innerHTML = `<div class="sheet-content-wrapper">${targetChapterEl.innerHTML}</div>`;
             }
-
-            // Immediately reveal target chapter on the page stage underneath at 0ms!
-            this.activateChapterSection(targetChapter);
 
             sheet.classList.remove('active-flip-forward', 'active-flip-backward');
             void sheet.offsetWidth; // Trigger reflow to restart CSS keyframe cleanly
@@ -314,12 +303,17 @@ class PhysicalBookController {
             const animationClass = isForward ? 'active-flip-forward' : 'active-flip-backward';
             sheet.classList.add(animationClass);
 
+            // Switch underlying chapter stage at 400ms (mid-flip) when sheet stands vertical at 90deg!
+            setTimeout(() => {
+                this.activateChapterSection(targetChapter);
+            }, 400);
+
             setTimeout(() => {
                 sheet.classList.remove('active-flip-forward', 'active-flip-backward');
                 sheetFront.innerHTML = '';
                 sheetBack.innerHTML = '';
                 this.isFlipping = false;
-            }, 750);
+            }, 850);
         } else {
             this.activateChapterSection(targetChapter);
         }
