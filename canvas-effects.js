@@ -134,6 +134,10 @@ class VisualEffectsController {
                 bloomProgress: 0,
                 color: ['#ff758c', '#c77dff', '#ffd166', '#ff4d6d', '#ff85a1'][Math.floor(Math.random() * 5)]
             });
+
+            if (window.appController && window.appController.soundController) {
+                window.appController.soundController.playSparkleChime();
+            }
         };
 
         this.tulipCanvas.addEventListener('pointerdown', (e) => {

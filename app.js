@@ -51,9 +51,166 @@ class TrackingService {
     }
 }
 
+class SoundController {
+    constructor() {
+        this.ctx = null;
+        this.isMuted = false;
+        this.bgmTimer = null;
+    }
+
+    initCtx() {
+        if (!this.ctx) {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (AudioCtx) {
+                this.ctx = new AudioCtx();
+            }
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+            this.ctx.resume();
+        }
+    }
+
+    toggleSound() {
+        this.isMuted = !this.isMuted;
+        if (this.isMuted) {
+            this.stopBGM();
+        } else {
+            this.initCtx();
+            this.startBGM();
+        }
+        return !this.isMuted;
+    }
+
+    playPaperFlip() {
+        if (this.isMuted) return;
+        this.initCtx();
+        if (!this.ctx) return;
+
+        try {
+            const bufferSize = Math.floor(this.ctx.sampleRate * 0.12);
+            const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
+
+            const noise = this.ctx.createBufferSource();
+            noise.buffer = buffer;
+
+            const filter = this.ctx.createBiquadFilter();
+            filter.type = 'bandpass';
+            filter.frequency.setValueAtTime(900, this.ctx.currentTime);
+            filter.frequency.exponentialRampToValueAtTime(300, this.ctx.currentTime + 0.12);
+
+            const gain = this.ctx.createGain();
+            gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.12);
+
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(this.ctx.destination);
+
+            noise.start();
+        } catch (e) {
+            console.warn('Audio play error:', e);
+        }
+    }
+
+    playBookOpenChime() {
+        if (this.isMuted) return;
+        this.initCtx();
+        if (!this.ctx) return;
+
+        this.playPaperFlip();
+
+        const notes = [1046.50, 1318.51, 1567.98, 2093.00];
+        notes.forEach((freq, i) => {
+            setTimeout(() => {
+                if (this.isMuted || !this.ctx) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+
+                    gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.4);
+
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.4);
+                } catch (e) {}
+            }, i * 75);
+        });
+    }
+
+    playSparkleChime() {
+        if (this.isMuted) return;
+        this.initCtx();
+        if (!this.ctx) return;
+
+        try {
+            const freq = 1760 + Math.random() * 800;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+
+            gain.gain.setValueAtTime(0.06, this.ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.25);
+
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+
+            osc.start();
+            osc.stop(this.ctx.currentTime + 0.25);
+        } catch (e) {}
+    }
+
+    startBGM() {
+        if (this.isMuted || this.bgmTimer) return;
+        this.initCtx();
+
+        const scale = [523.25, 587.33, 659.25, 783.99, 880.00, 1046.50];
+        this.bgmTimer = setInterval(() => {
+            if (this.isMuted || !this.ctx) return;
+            try {
+                const freq = scale[Math.floor(Math.random() * scale.length)];
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+
+                gain.gain.setValueAtTime(0.015, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.04, this.ctx.currentTime + 0.3);
+                gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 1.8);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                osc.start();
+                osc.stop(this.ctx.currentTime + 1.8);
+            } catch (e) {}
+        }, 1300);
+    }
+
+    stopBGM() {
+        if (this.bgmTimer) {
+            clearInterval(this.bgmTimer);
+            this.bgmTimer = null;
+        }
+    }
+}
+
 class PhysicalBookController {
     constructor() {
         this.trackingService = new TrackingService();
+        this.soundController = new SoundController();
         this.currentChapter = 1;
         this.totalChapters = 8;
         this.isBookOpened = false;
@@ -174,6 +331,12 @@ class PhysicalBookController {
             secretToggleBtn.addEventListener('click', () => this.toggleSecretMode());
         }
 
+        // Sound Engine Toggle Button
+        const soundToggleBtn = document.getElementById('soundToggleBtn');
+        if (soundToggleBtn) {
+            soundToggleBtn.addEventListener('click', () => this.toggleSound());
+        }
+
         const revealSecretBtn = document.getElementById('revealSecretBtn');
         if (revealSecretBtn) {
             revealSecretBtn.addEventListener('click', () => this.setSecretMode(false));
@@ -254,6 +417,11 @@ class PhysicalBookController {
         if (this.isBookOpened || this.isOpening) return;
         this.isOpening = true;
 
+        if (this.soundController) {
+            this.soundController.playBookOpenChime();
+            this.soundController.startBGM();
+        }
+
         const bookObj = document.getElementById('book3dObject');
         const coverFront = document.getElementById('bookCoverFront3D');
 
@@ -316,6 +484,9 @@ class PhysicalBookController {
 
         if (animate && sheet && sheetFront && sheetBack && currentChapterEl && targetChapterEl) {
             this.isFlipping = true;
+            if (this.soundController) {
+                this.soundController.playPaperFlip();
+            }
 
             // 1. Assign turning page content to active face & blank default paper texture to reverse face
             if (isForward) {
@@ -659,11 +830,35 @@ class PhysicalBookController {
         }
     }
 
+    toggleSound() {
+        if (!this.soundController) return;
+        const isPlaying = this.soundController.toggleSound();
+        const soundIcon = document.getElementById('soundIcon');
+        const soundText = document.getElementById('soundText');
+        const soundToggleBtn = document.getElementById('soundToggleBtn');
+
+        if (isPlaying) {
+            if (soundIcon) soundIcon.textContent = '🔊';
+            if (soundText) soundText.textContent = 'Sound ON';
+            if (soundToggleBtn) soundToggleBtn.classList.remove('muted-sound');
+            this.showToast('🎵 Sound & Ambient Music ON');
+        } else {
+            if (soundIcon) soundIcon.textContent = '🔇';
+            if (soundText) soundText.textContent = 'Muted';
+            if (soundToggleBtn) soundToggleBtn.classList.add('muted-sound');
+            this.showToast('🔇 Sound Muted');
+        }
+    }
+
     blowOutCandle() {
         const flame = document.getElementById('candleFlame');
         const wishToast = document.getElementById('wishToast');
         if (flame) flame.classList.add('blown-out');
         if (wishToast) wishToast.classList.remove('hidden');
+
+        if (this.soundController) {
+            this.soundController.playSparkleChime();
+        }
 
         if (window.effectsController) {
             window.effectsController.triggerSparklesAroundElement('.cake-visual');
