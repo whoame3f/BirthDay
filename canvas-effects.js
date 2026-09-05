@@ -210,52 +210,136 @@ class VisualEffectsController {
         this.routeCtx.setLineDash([]);
     }
 
+    drawRealisticTulipHead(ctx, x, y, baseSize, bloomProgress, mainColor) {
+        if (bloomProgress <= 0) return;
+
+        ctx.save();
+        ctx.translate(x, y);
+
+        const s = baseSize * Math.min(1, bloomProgress * 1.1);
+
+        // Soft Glowing Backdrop
+        ctx.shadowColor = mainColor;
+        ctx.shadowBlur = 22;
+
+        // 1. Back Center Petal (Darker Shading)
+        ctx.beginPath();
+        ctx.moveTo(0, -s * 0.1);
+        ctx.bezierCurveTo(-s * 0.45, -s * 0.6, -s * 0.35, -s * 1.3, 0, -s * 1.5);
+        ctx.bezierCurveTo(s * 0.35, -s * 1.3, s * 0.45, -s * 0.6, 0, -s * 0.1);
+        ctx.fillStyle = mainColor;
+        ctx.fill();
+
+        // 2. Left Outer Curved Petal (Tulip Cup)
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(-s * 0.85, -s * 0.35, -s * 0.95, -s * 1.15, -s * 0.3, -s * 1.35);
+        ctx.bezierCurveTo(-s * 0.05, -s * 0.85, 0, -s * 0.3, 0, 0);
+        const gradLeft = ctx.createLinearGradient(-s * 0.5, 0, -s * 0.2, -s * 1.3);
+        gradLeft.addColorStop(0, mainColor);
+        gradLeft.addColorStop(0.7, mainColor);
+        gradLeft.addColorStop(1, '#ffffff');
+        ctx.fillStyle = gradLeft;
+        ctx.fill();
+
+        // 3. Right Outer Curved Petal (Tulip Cup)
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(s * 0.85, -s * 0.35, s * 0.95, -s * 1.15, s * 0.3, -s * 1.35);
+        ctx.bezierCurveTo(s * 0.05, -s * 0.85, 0, -s * 0.3, 0, 0);
+        const gradRight = ctx.createLinearGradient(s * 0.5, 0, s * 0.2, -s * 1.3);
+        gradRight.addColorStop(0, mainColor);
+        gradRight.addColorStop(0.7, mainColor);
+        gradRight.addColorStop(1, '#ffffff');
+        ctx.fillStyle = gradRight;
+        ctx.fill();
+
+        // 4. Front Overlapping Center Petal (Highlights)
+        ctx.beginPath();
+        ctx.moveTo(-s * 0.2, 0);
+        ctx.bezierCurveTo(-s * 0.55, -s * 0.5, -s * 0.4, -s * 1.25, 0, -s * 1.45);
+        ctx.bezierCurveTo(s * 0.4, -s * 1.25, s * 0.55, -s * 0.5, s * 0.2, 0);
+        ctx.closePath();
+
+        const gradFront = ctx.createLinearGradient(0, 0, 0, -s * 1.45);
+        gradFront.addColorStop(0, mainColor);
+        gradFront.addColorStop(0.8, mainColor);
+        gradFront.addColorStop(1, '#fffae6');
+        ctx.fillStyle = gradFront;
+        ctx.fill();
+
+        // 5. Stamen / Center Core Glow
+        if (bloomProgress > 0.4) {
+            ctx.beginPath();
+            ctx.arc(0, -s * 0.6, s * 0.12, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffd166';
+            ctx.shadowColor = '#ffd166';
+            ctx.shadowBlur = 10;
+            ctx.fill();
+        }
+
+        ctx.restore();
+    }
+
     drawTulips() {
         if (!this.tulipCtx || !this.tulipCanvas) return;
 
         this.ensureTulipCanvasSize();
-
         this.tulipCtx.clearRect(0, 0, this.tulipCanvas.width, this.tulipCanvas.height);
 
         this.tulips.forEach(t => {
             if (t.stemHeight < t.maxStemHeight) {
-                t.stemHeight += 1.5;
+                t.stemHeight += 1.8;
             } else if (t.bloomProgress < 1) {
                 t.bloomProgress += 0.04;
             }
 
+            const stemProgress = Math.min(1, t.stemHeight / t.maxStemHeight);
             const topY = t.y - t.stemHeight;
 
-            // Stem
+            // 1. Natural Curved Stem
             this.tulipCtx.beginPath();
             this.tulipCtx.moveTo(t.x, t.y);
-            this.tulipCtx.quadraticCurveTo(t.x + 10, t.y - t.stemHeight / 2, t.x, topY);
+            this.tulipCtx.quadraticCurveTo(t.x + 8, t.y - t.stemHeight / 2, t.x, topY);
             this.tulipCtx.strokeStyle = '#48bb78';
-            this.tulipCtx.lineWidth = 4;
+            this.tulipCtx.lineWidth = 4.5;
+            this.tulipCtx.lineCap = 'round';
             this.tulipCtx.stroke();
 
-            // Leaf
-            this.tulipCtx.beginPath();
-            this.tulipCtx.moveTo(t.x, t.y - 15);
-            this.tulipCtx.quadraticCurveTo(t.x + 20, t.y - 25, t.x + 15, t.y - 45);
-            this.tulipCtx.quadraticCurveTo(t.x + 5, t.y - 30, t.x, t.y - 15);
-            this.tulipCtx.fillStyle = '#38a169';
-            this.tulipCtx.fill();
-
-            // Petals Bloom
-            if (t.bloomProgress > 0) {
-                const size = 16 * t.bloomProgress;
-                this.tulipCtx.save();
-                this.tulipCtx.translate(t.x, topY);
+            // 2. Simultaneous Growing Leaves (Unfolding as stem grows!)
+            // Left Leaf (lower stem)
+            const leaf1Progress = Math.min(1, Math.max(0, (stemProgress - 0.15) / 0.5));
+            if (leaf1Progress > 0) {
+                const leaf1Y = t.y - t.stemHeight * 0.35;
+                const len = 32 * leaf1Progress;
+                const w = 15 * leaf1Progress;
 
                 this.tulipCtx.beginPath();
-                this.tulipCtx.arc(0, -size / 2, size, 0, Math.PI * 2);
-                this.tulipCtx.fillStyle = t.color;
-                this.tulipCtx.shadowColor = t.color;
-                this.tulipCtx.shadowBlur = 15;
+                this.tulipCtx.moveTo(t.x + 2, leaf1Y);
+                this.tulipCtx.quadraticCurveTo(t.x - w * 1.5, leaf1Y - len * 0.5, t.x - w, leaf1Y - len);
+                this.tulipCtx.quadraticCurveTo(t.x - w * 0.4, leaf1Y - len * 0.6, t.x + 2, leaf1Y);
+                this.tulipCtx.fillStyle = '#38a169';
                 this.tulipCtx.fill();
+            }
 
-                this.tulipCtx.restore();
+            // Right Leaf (upper stem)
+            const leaf2Progress = Math.min(1, Math.max(0, (stemProgress - 0.4) / 0.5));
+            if (leaf2Progress > 0) {
+                const leaf2Y = t.y - t.stemHeight * 0.62;
+                const len = 28 * leaf2Progress;
+                const w = 14 * leaf2Progress;
+
+                this.tulipCtx.beginPath();
+                this.tulipCtx.moveTo(t.x - 2, leaf2Y);
+                this.tulipCtx.quadraticCurveTo(t.x + w * 1.5, leaf2Y - len * 0.5, t.x + w, leaf2Y - len);
+                this.tulipCtx.quadraticCurveTo(t.x + w * 0.4, leaf2Y - len * 0.6, t.x - 2, leaf2Y);
+                this.tulipCtx.fillStyle = '#2f855a';
+                this.tulipCtx.fill();
+            }
+
+            // 3. Realistic Tulip Flower Petals Head
+            if (t.bloomProgress > 0) {
+                this.drawRealisticTulipHead(this.tulipCtx, t.x, topY, 24, t.bloomProgress, t.color);
             }
         });
     }
