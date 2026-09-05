@@ -983,8 +983,9 @@ class PhotoRollerController {
 
         displayList.forEach((src, idx) => {
             const tilt = (idx % 2 === 0 ? 2 : -2) + (Math.random() - 0.5) * 2;
-            const filename = src.split('/').pop().split('.')[0];
-            const caption = filename.replace(/[-_]/g, ' ').toUpperCase();
+            const rawName = src.split('/').pop();
+            const match = rawName.match(/photo_?(\d+)/i);
+            let caption = match ? `Precious Moment #${match[1]}` : `Memory #${(idx % this.photos.length) + 1}`;
 
             const card = document.createElement('div');
             card.className = 'photo-film-card';
