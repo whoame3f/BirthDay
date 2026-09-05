@@ -98,19 +98,50 @@ class VisualEffectsController {
 
     initBgParticles() {
         this.particles = [];
-        const count = Math.min(Math.floor(window.innerWidth / 20), 40);
+        const count = Math.min(Math.floor(window.innerWidth / 25), 35);
         
         for (let i = 0; i < count; i++) {
             this.particles.push({
                 x: Math.random() * window.innerWidth,
                 y: Math.random() * window.innerHeight,
-                radius: Math.random() * 2 + 1,
-                color: ['#ffd166', '#ff758c', '#c77dff', '#4cc9f0'][Math.floor(Math.random() * 4)],
-                alpha: Math.random() * 0.6 + 0.2,
-                vx: (Math.random() - 0.5) * 0.4,
-                vy: -Math.random() * 0.5 - 0.2
+                size: Math.random() * 7 + 6,
+                color: ['#ff2a85', '#ff0055', '#ffd166', '#d000ff', '#ff758c', '#ff4d6d'][Math.floor(Math.random() * 6)],
+                alpha: Math.random() * 0.65 + 0.35,
+                vx: (Math.random() - 0.5) * 0.2,
+                vy: -Math.random() * 0.5 - 0.25,
+                sway: Math.random() * Math.PI * 2,
+                swaySpeed: Math.random() * 0.02 + 0.01,
+                rotation: (Math.random() - 0.5) * 0.3
             });
         }
+    }
+
+    drawNeonHeart(ctx, x, y, size, color, alpha, rotation = 0) {
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.translate(x, y);
+        if (rotation) ctx.rotate(rotation);
+
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 14;
+
+        ctx.beginPath();
+        const topCurveHeight = size * 0.25;
+        ctx.moveTo(0, topCurveHeight);
+        ctx.bezierCurveTo(
+            -size / 2, -topCurveHeight,
+            -size, size / 3,
+            0, size
+        );
+        ctx.bezierCurveTo(
+            size, size / 3,
+            size / 2, -topCurveHeight,
+            0, topCurveHeight
+        );
+        
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.restore();
     }
 
     initTulipGarden() {
@@ -269,23 +300,23 @@ class VisualEffectsController {
     }
 
     animate() {
-        // Bg Particles
+        // Bg Neon Love Hearts
         if (this.bgCtx && this.bgCanvas) {
             this.bgCtx.clearRect(0, 0, this.bgCanvas.width, this.bgCanvas.height);
             
             this.particles.forEach(p => {
-                p.x += p.vx;
+                p.sway += p.swaySpeed;
+                p.x += p.vx + Math.sin(p.sway) * 0.45;
                 p.y += p.vy;
 
-                if (p.y < 0) p.y = this.bgCanvas.height;
-                if (p.x < 0) p.x = this.bgCanvas.width;
-                if (p.x > this.bgCanvas.width) p.x = 0;
+                if (p.y < -25) {
+                    p.y = this.bgCanvas.height + 25;
+                    p.x = Math.random() * this.bgCanvas.width;
+                }
+                if (p.x < -25) p.x = this.bgCanvas.width + 25;
+                if (p.x > this.bgCanvas.width + 25) p.x = -25;
 
-                this.bgCtx.beginPath();
-                this.bgCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                this.bgCtx.fillStyle = p.color;
-                this.bgCtx.globalAlpha = p.alpha;
-                this.bgCtx.fill();
+                this.drawNeonHeart(this.bgCtx, p.x, p.y, p.size, p.color, p.alpha, p.rotation + Math.sin(p.sway) * 0.15);
             });
             this.bgCtx.globalAlpha = 1;
         }
