@@ -5,6 +5,24 @@
 class TrackingService {
     constructor(apiBaseUrl = '/api/tracking') {
         this.apiBaseUrl = apiBaseUrl;
+        this.fallbackData = {
+            "order": "Special Birthday Gift 🎁",
+            "courier": "Shopee Xpress (SPX Premium)",
+            "trackingNumber": "SPX9284719283ID",
+            "estimatedDelivery": "2026-09-01T18:30:00Z",
+            "lastUpdate": "2026-09-01 10:30 WIB",
+            "secretMessage": "A magical handcrafted surprise full of warmth and sweet memories!",
+            "timeline": [
+                { "id": "ORDER_PLACED", "title": "Order Placed", "subtitle": "Your gift has started its journey.", "location": "Jakarta Store", "timestamp": "2026-08-31 09:00 WIB", "icon": "📦", "completed": true },
+                { "id": "SELLER_PREPARING", "title": "Seller Preparing", "subtitle": "The birthday surprise is being prepared with special care...", "location": "Seller Workshop", "timestamp": "2026-08-31 14:15 WIB", "icon": "🏪", "completed": true },
+                { "id": "PACKAGE_PICKED_UP", "title": "Package Picked Up", "subtitle": "Your gift has officially started traveling.", "location": "Central Logistics Depot", "timestamp": "2026-08-31 18:45 WIB", "icon": "🚚", "completed": true },
+                { "id": "SORTING_CENTER", "title": "Sorting Center", "subtitle": "Your gift is getting closer...", "location": "Jakarta Hub Transit Center", "timestamp": "2026-09-01 04:20 WIB", "icon": "📍", "completed": true },
+                { "id": "OUT_FOR_DELIVERY", "title": "Out for Delivery", "subtitle": "It's almost there! Courier is on the way to your door.", "location": "Local Express Station", "timestamp": "2026-09-01 10:30 WIB", "icon": "🛵", "completed": true, "active": true },
+                { "id": "DELIVERED", "title": "Delivered", "subtitle": "The surprise has arrived!", "location": "Your Home", "timestamp": "2026-09-01 --:--", "icon": "🎁", "completed": false }
+            ],
+            "status": "OUT_FOR_DELIVERY",
+            "currentLocation": "Local Express Station"
+        };
     }
 
     async getTrackingInfo(params = {}) {
@@ -13,13 +31,22 @@ class TrackingService {
 
         try {
             const response = await fetch(fetchUrl);
-            if (!response.ok) {
-                throw new Error(`Tracking API error: ${response.status} ${response.statusText}`);
+            if (response.ok) {
+                return await response.json();
             }
-            return await response.json();
-        } catch (error) {
-            console.error('TrackingService fetch failed:', error);
-            throw error;
+            throw new Error(`Primary endpoint returned ${response.status}`);
+        } catch (primaryErr) {
+            try {
+                // Try fallback to static JSON asset (for static deployment hosts like Vercel)
+                const fallbackResponse = await fetch('./api/tracking.json');
+                if (fallbackResponse.ok) {
+                    return await fallbackResponse.json();
+                }
+            } catch (fallbackErr) {
+                console.warn('Fallback JSON fetch failed, using embedded tracking data:', fallbackErr);
+            }
+            // If offline or file:// protocol, return embedded fallback data
+            return this.fallbackData;
         }
     }
 }
@@ -156,6 +183,12 @@ class PhysicalBookController {
         const copyBtn = document.getElementById('copyTrackingBtn');
         if (copyBtn) {
             copyBtn.addEventListener('click', () => this.copyTrackingNumber());
+        }
+
+        // Change SPX Tracking Number Button
+        const changeTrackingBtn = document.getElementById('changeTrackingBtn');
+        if (changeTrackingBtn) {
+            changeTrackingBtn.addEventListener('click', () => this.promptChangeTrackingNumber());
         }
 
         // Refresh Journey Button
@@ -608,6 +641,16 @@ class PhysicalBookController {
         }).catch(() => {
             this.showToast("Tracking number selected");
         });
+    }
+
+    promptChangeTrackingNumber() {
+        const currentNum = document.getElementById('infoTrackingNum')?.textContent || 'SPX9284719283ID';
+        const inputNum = prompt('Enter your live Shopee Xpress (SPX) tracking number:', currentNum);
+        if (inputNum && inputNum.trim() !== '') {
+            const cleanNum = inputNum.trim();
+            this.showToast(`Syncing status for SPX: ${cleanNum}... 🚚`);
+            this.loadTrackingData({ trackingNumber: cleanNum });
+        }
     }
 
     blowOutCandle() {

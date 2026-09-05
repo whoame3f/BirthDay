@@ -1,0 +1,67 @@
+{
+  "order": "Special Birthday Gift 🎁",
+  "courier": "Shopee Xpress (SPX Premium)",
+  "trackingNumber": "SPX9284719283ID",
+  "estimatedDelivery": "2026-09-01T18:30:00Z",
+  "lastUpdate": "2026-09-01 10:30 WIB",
+  "secretMessage": "A magical handcrafted surprise full of warmth and sweet memories!",
+  "timeline": [
+    {
+      "id": "ORDER_PLACED",
+      "title": "Order Placed",
+      "subtitle": "Your gift has started its journey.",
+      "location": "Jakarta Store",
+      "timestamp": "2026-08-31 09:00 WIB",
+      "icon": "📦",
+      "completed": true
+    },
+    {
+      "id": "SELLER_PREPARING",
+      "title": "Seller Preparing",
+      "subtitle": "The birthday surprise is being prepared with special care...",
+      "location": "Seller Workshop",
+      "timestamp": "2026-08-31 14:15 WIB",
+      "icon": "🏪",
+      "completed": true
+    },
+    {
+      "id": "PACKAGE_PICKED_UP",
+      "title": "Package Picked Up",
+      "subtitle": "Your gift has officially started traveling.",
+      "location": "Central Logistics Depot",
+      "timestamp": "2026-08-31 18:45 WIB",
+      "icon": "🚚",
+      "completed": true
+    },
+    {
+      "id": "SORTING_CENTER",
+      "title": "Sorting Center",
+      "subtitle": "Your gift is getting closer...",
+      "location": "Jakarta Hub Transit Center",
+      "timestamp": "2026-09-01 04:20 WIB",
+      "icon": "📍",
+      "completed": true
+    },
+    {
+      "id": "OUT_FOR_DELIVERY",
+      "title": "Out for Delivery",
+      "subtitle": "It's almost there! Courier is on the way to your door.",
+      "location": "Local Express Station",
+      "timestamp": "2026-09-01 10:30 WIB",
+      "icon": "🛵",
+      "completed": true,
+      "active": true
+    },
+    {
+      "id": "DELIVERED",
+      "title": "Delivered",
+      "subtitle": "The surprise has arrived!",
+      "location": "Your Home",
+      "timestamp": "2026-09-01 --:--",
+      "icon": "🎁",
+      "completed": false
+    }
+  ],
+  "status": "OUT_FOR_DELIVERY",
+  "currentLocation": "Local Express Station"
+}

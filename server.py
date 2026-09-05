@@ -102,6 +102,27 @@ class TrackingRequestHandler(http.server.SimpleHTTPRequestHandler):
         if path.startswith('/api/tracking'):
             global current_simulated_status, simulate_error
 
+            # Check if live tracking number requested
+            tracking_num = None
+            if 'trackingNumber' in query:
+                tracking_num = query['trackingNumber'][0]
+            elif 'sls_tracking_number' in query:
+                tracking_num = query['sls_tracking_number'][0]
+
+            if tracking_num and tracking_num.upper() != "SPX9284719283ID":
+                try:
+                    from api.tracking import fetch_spx_tracking, format_spx_response
+                    spx_raw = fetch_spx_tracking(tracking_num)
+                    if spx_raw:
+                        resp_data = format_spx_response(spx_raw, tracking_num)
+                        self.send_response(200)
+                        self.send_header('Content-Type', 'application/json')
+                        self.end_headers()
+                        self.wfile.write(json.dumps(resp_data, ensure_ascii=False).encode('utf-8'))
+                        return
+                except Exception as ex:
+                    print(f"Failed to fetch live SPX tracking: {ex}")
+
             if 'status' in query:
                 req_status = query['status'][0].upper()
                 valid_ids = [t['id'] for t in MOCK_DATABASE['timeline']]
