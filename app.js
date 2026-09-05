@@ -55,8 +55,34 @@ class SoundController {
     constructor() {
         this.ctx = null;
         this.isMuted = false;
-        this.bgmTimer = null;
+        this.bgAudio = document.getElementById('bgAudio');
     }
+
+    startBGM() {
+        if (this.isMuted) return;
+        if (!this.bgAudio) {
+            this.bgAudio = document.getElementById('bgAudio');
+        }
+        if (this.bgAudio) {
+            this.bgAudio.volume = 0.6;
+            const playPromise = this.bgAudio.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(err => {
+                    console.log('Audio autoplay postponed until user interaction:', err);
+                });
+            }
+        }
+    }
+
+    stopBGM() {
+        if (!this.bgAudio) {
+            this.bgAudio = document.getElementById('bgAudio');
+        }
+        if (this.bgAudio) {
+            this.bgAudio.pause();
+        }
+    }
+}
 
     initCtx() {
         if (!this.ctx) {
@@ -169,41 +195,6 @@ class SoundController {
             osc.start();
             osc.stop(this.ctx.currentTime + 0.25);
         } catch (e) {}
-    }
-
-    startBGM() {
-        if (this.isMuted || this.bgmTimer) return;
-        this.initCtx();
-
-        const scale = [523.25, 587.33, 659.25, 783.99, 880.00, 1046.50];
-        this.bgmTimer = setInterval(() => {
-            if (this.isMuted || !this.ctx) return;
-            try {
-                const freq = scale[Math.floor(Math.random() * scale.length)];
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-
-                gain.gain.setValueAtTime(0.015, this.ctx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.04, this.ctx.currentTime + 0.3);
-                gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 1.8);
-
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-
-                osc.start();
-                osc.stop(this.ctx.currentTime + 1.8);
-            } catch (e) {}
-        }, 1300);
-    }
-
-    stopBGM() {
-        if (this.bgmTimer) {
-            clearInterval(this.bgmTimer);
-            this.bgmTimer = null;
-        }
     }
 }
 
