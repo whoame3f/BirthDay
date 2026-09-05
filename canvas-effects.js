@@ -260,20 +260,61 @@ class VisualEffectsController {
         });
     }
 
-    triggerConfettiBurst() {
-        const count = 70;
-        for (let i = 0; i < count; i++) {
-            this.confettiParticles.push({
-                x: window.innerWidth / 2,
-                y: window.innerHeight / 2,
-                vx: (Math.random() - 0.5) * 14,
-                vy: (Math.random() - 0.8) * 12,
-                radius: Math.random() * 6 + 3,
-                color: ['#ffd166', '#ff758c', '#c77dff', '#4cc9f0', '#ffffff'][Math.floor(Math.random() * 5)],
-                alpha: 1,
-                decay: Math.random() * 0.02 + 0.01
-            });
+    drawStarSparkle(ctx, x, y, size, color, alpha, rotation = 0) {
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.translate(x, y);
+        if (rotation) ctx.rotate(rotation);
+
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 12;
+        ctx.fillStyle = color;
+
+        ctx.beginPath();
+        for (let i = 0; i < 8; i++) {
+            const r = (i % 2 === 0) ? size : size * 0.35;
+            const angle = (i * Math.PI) / 4;
+            const px = Math.cos(angle) * r;
+            const py = Math.sin(angle) * r;
+            if (i === 0) ctx.moveTo(px, py);
+            else ctx.lineTo(px, py);
         }
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+    }
+
+    triggerConfettiBurst() {
+        const countPerPoint = 120;
+        const origins = [
+            { x: window.innerWidth * 0.5, y: window.innerHeight * 0.4 },
+            { x: window.innerWidth * 0.2, y: window.innerHeight * 0.75 },
+            { x: window.innerWidth * 0.8, y: window.innerHeight * 0.75 }
+        ];
+
+        origins.forEach(origin => {
+            for (let i = 0; i < countPerPoint; i++) {
+                const shapes = ['star', 'star', 'heart', 'circle'];
+                const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                const colors = ['#ffd166', '#ff2a85', '#c77dff', '#4cc9f0', '#ffffff', '#ff4d6d', '#ffaa00'];
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 18 + 4;
+
+                this.confettiParticles.push({
+                    x: origin.x,
+                    y: origin.y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed - 5,
+                    radius: Math.random() * 8 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    shape: shape,
+                    alpha: 1,
+                    decay: Math.random() * 0.012 + 0.006,
+                    spin: (Math.random() - 0.5) * 0.2,
+                    rotation: Math.random() * Math.PI * 2
+                });
+            }
+        });
     }
 
     triggerSparklesAroundElement(selector) {
@@ -281,16 +322,26 @@ class VisualEffectsController {
         if (!el) return;
 
         const rect = el.getBoundingClientRect();
-        for (let i = 0; i < 30; i++) {
+        const count = 150;
+        const colors = ['#ffd166', '#ff2a85', '#c77dff', '#ffffff', '#ffaa00', '#4cc9f0'];
+
+        for (let i = 0; i < count; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const speed = Math.random() * 14 + 4;
+            const shapes = ['star', 'star', 'heart', 'circle'];
+
             this.confettiParticles.push({
-                x: rect.left + rect.width / 2 + (Math.random() - 0.5) * rect.width,
-                y: rect.top + rect.height / 2 + (Math.random() - 0.5) * rect.height,
-                vx: (Math.random() - 0.5) * 8,
-                vy: (Math.random() - 0.5) * 8,
-                radius: Math.random() * 4 + 2,
-                color: '#ffd166',
+                x: rect.left + rect.width / 2 + (Math.random() - 0.5) * (rect.width * 0.8),
+                y: rect.top + rect.height / 2 + (Math.random() - 0.5) * (rect.height * 0.8),
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed - 4,
+                radius: Math.random() * 8 + 3,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                shape: shapes[Math.floor(Math.random() * shapes.length)],
                 alpha: 1,
-                decay: 0.02
+                decay: Math.random() * 0.014 + 0.007,
+                spin: (Math.random() - 0.5) * 0.25,
+                rotation: Math.random() * Math.PI * 2
             });
         }
     }
@@ -330,13 +381,15 @@ class VisualEffectsController {
         // Tulips
         this.drawTulips();
 
-        // Confetti / Sparkles
+        // Confetti / Grand Celebration Sparkles
         if (this.bgCtx) {
             for (let i = this.confettiParticles.length - 1; i >= 0; i--) {
                 const c = this.confettiParticles[i];
                 c.x += c.vx;
                 c.y += c.vy;
-                c.vy += 0.2; // Gravity
+                c.vy += 0.25; // Smooth gravity
+                c.vx *= 0.985; // Air drag
+                c.rotation += c.spin;
                 c.alpha -= c.decay;
 
                 if (c.alpha <= 0) {
@@ -344,11 +397,21 @@ class VisualEffectsController {
                     continue;
                 }
 
-                this.bgCtx.beginPath();
-                this.bgCtx.arc(c.x, c.y, c.radius, 0, Math.PI * 2);
-                this.bgCtx.fillStyle = c.color;
-                this.bgCtx.globalAlpha = c.alpha;
-                this.bgCtx.fill();
+                if (c.shape === 'star') {
+                    this.drawStarSparkle(this.bgCtx, c.x, c.y, c.radius, c.color, c.alpha, c.rotation);
+                } else if (c.shape === 'heart') {
+                    this.drawNeonHeart(this.bgCtx, c.x, c.y, c.radius * 1.2, c.color, c.alpha, c.rotation);
+                } else {
+                    this.bgCtx.save();
+                    this.bgCtx.beginPath();
+                    this.bgCtx.arc(c.x, c.y, c.radius, 0, Math.PI * 2);
+                    this.bgCtx.fillStyle = c.color;
+                    this.bgCtx.shadowColor = c.color;
+                    this.bgCtx.shadowBlur = 10;
+                    this.bgCtx.globalAlpha = c.alpha;
+                    this.bgCtx.fill();
+                    this.bgCtx.restore();
+                }
             }
             this.bgCtx.globalAlpha = 1;
         }
