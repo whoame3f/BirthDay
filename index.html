@@ -407,6 +407,42 @@
         </div> <!-- End book-perspective-wrapper -->
     </main>
 
+    <!-- DYNAMIC PHOTO ROLLER SHOWCASE MODAL -->
+    <div class="photo-roller-overlay hidden" id="photoRollerOverlay">
+        <div class="photo-roller-modal">
+            <div class="photo-roller-header">
+                <div class="photo-roller-title">
+                    <span class="roller-icon">🎞️</span>
+                    <h3>Precious Memories & Moments</h3>
+                </div>
+                <div class="photo-roller-actions">
+                    <button class="roller-action-btn" id="replaySparklesBtn" title="Replay Sparkles Burst">✨ Sparkles</button>
+                    <button class="close-roller-btn" id="closeRollerBtn" title="Close Photo Roller">✖</button>
+                </div>
+            </div>
+
+            <!-- Film Strip Roller Track -->
+            <div class="film-strip-container">
+                <div class="film-perforations top"></div>
+                <div class="film-strip-track" id="filmStripTrack">
+                    <!-- Dynamic photo cards inserted here -->
+                </div>
+                <div class="film-perforations bottom"></div>
+            </div>
+
+            <p class="photo-roller-hint">💡 Hover or click any photo to inspect full size • Auto-loaded from <code>assets/</code></p>
+        </div>
+    </div>
+
+    <!-- FULLSCREEN PHOTO LIGHTBOX PREVIEW -->
+    <div class="photo-lightbox-overlay hidden" id="photoLightboxOverlay">
+        <div class="photo-lightbox-card">
+            <button class="close-lightbox-btn" id="closeLightboxBtn">✖</button>
+            <img src="" id="lightboxImg" alt="Memory Photo Full Preview">
+            <p class="lightbox-caption" id="lightboxCaption">Precious Memory Photo</p>
+        </div>
+    </div>
+
     <!-- Notification Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 

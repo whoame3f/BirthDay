@@ -201,6 +201,7 @@ class PhysicalBookController {
     constructor() {
         this.trackingService = new TrackingService();
         this.soundController = new SoundController();
+        this.photoRoller = new PhotoRollerController(this);
         this.currentChapter = 1;
         this.totalChapters = 8;
         this.isBookOpened = false;
@@ -362,6 +363,12 @@ class PhysicalBookController {
             finalCelebrateBtn.addEventListener('click', () => {
                 if (window.effectsController) {
                     window.effectsController.triggerConfettiBurst();
+                }
+                if (this.soundController) {
+                    this.soundController.playSparkleChime();
+                }
+                if (this.photoRoller) {
+                    this.photoRoller.triggerAfterSparkles();
                 }
                 this.showToast("✨ Celebration sparkles activated! 🎉");
             });
@@ -854,6 +861,10 @@ class PhysicalBookController {
             window.effectsController.triggerSparklesAroundElement('.cake-visual');
         }
 
+        if (this.photoRoller) {
+            this.photoRoller.triggerAfterSparkles();
+        }
+
         this.showToast("🎂 Make a wish! Your candle has been blown out ✨");
     }
 
@@ -870,6 +881,164 @@ class PhysicalBookController {
             toast.style.opacity = '0';
             setTimeout(() => toast.remove(), 300);
         }, 3000);
+    }
+}
+
+class PhotoRollerController {
+    constructor(parentApp) {
+        this.app = parentApp;
+        this.photos = [];
+        this.init();
+    }
+
+    async init() {
+        this.bindEvents();
+        await this.scanAssetsFolder();
+        this.renderFilmStrip();
+    }
+
+    bindEvents() {
+        const closeRollerBtn = document.getElementById('closeRollerBtn');
+        if (closeRollerBtn) {
+            closeRollerBtn.addEventListener('click', () => this.hidePhotoRoller());
+        }
+
+        const replaySparklesBtn = document.getElementById('replaySparklesBtn');
+        if (replaySparklesBtn) {
+            replaySparklesBtn.addEventListener('click', () => {
+                if (window.effectsController) {
+                    window.effectsController.triggerConfettiBurst();
+                }
+                if (this.app && this.app.soundController) {
+                    this.app.soundController.playSparkleChime();
+                }
+            });
+        }
+
+        const closeLightboxBtn = document.getElementById('closeLightboxBtn');
+        if (closeLightboxBtn) {
+            closeLightboxBtn.addEventListener('click', () => this.hideLightbox());
+        }
+
+        const lightboxOverlay = document.getElementById('photoLightboxOverlay');
+        if (lightboxOverlay) {
+            lightboxOverlay.addEventListener('click', (e) => {
+                if (e.target === lightboxOverlay) this.hideLightbox();
+            });
+        }
+    }
+
+    async scanAssetsFolder() {
+        let discoveredPhotos = [];
+
+        try {
+            const resp = await fetch('assets/photos.json');
+            if (resp.ok) {
+                const list = await resp.json();
+                if (Array.isArray(list) && list.length > 0) {
+                    discoveredPhotos = list;
+                }
+            }
+        } catch (err) {
+            console.log('Manifest fetch check skipped:', err);
+        }
+
+        if (discoveredPhotos.length === 0) {
+            const candidatePaths = [
+                'assets/photo1.jpg', 'assets/photo2.jpg', 'assets/photo3.jpg', 'assets/photo4.jpg', 'assets/photo5.jpg',
+                'assets/1.jpg', 'assets/2.jpg', 'assets/3.jpg', 'assets/4.jpg', 'assets/5.jpg',
+                'assets/photo1.png', 'assets/photo2.png', 'assets/photo3.png', 'assets/photo4.png'
+            ];
+
+            const probePromises = candidatePaths.map(src => {
+                return new Promise(resolve => {
+                    const img = new Image();
+                    img.onload = () => resolve(src);
+                    img.onerror = () => resolve(null);
+                    img.src = src;
+                });
+            });
+
+            const probeResults = await Promise.all(probePromises);
+            discoveredPhotos = probeResults.filter(src => src !== null);
+        }
+
+        if (discoveredPhotos.length === 0) {
+            discoveredPhotos = [
+                'assets/photo1.jpg',
+                'assets/photo2.jpg'
+            ];
+        }
+
+        this.photos = discoveredPhotos;
+    }
+
+    renderFilmStrip() {
+        const track = document.getElementById('filmStripTrack');
+        if (!track || this.photos.length === 0) return;
+
+        track.innerHTML = '';
+
+        const displayList = [...this.photos, ...this.photos, ...this.photos];
+
+        displayList.forEach((src, idx) => {
+            const tilt = (idx % 2 === 0 ? 2 : -2) + (Math.random() - 0.5) * 2;
+            const filename = src.split('/').pop().split('.')[0];
+            const caption = filename.replace(/[-_]/g, ' ').toUpperCase();
+
+            const card = document.createElement('div');
+            card.className = 'photo-film-card';
+            card.style.setProperty('--card-tilt', `${tilt}deg`);
+            card.innerHTML = `
+                <div class="photo-film-img-box">
+                    <img src="${src}" alt="${caption}" loading="lazy">
+                </div>
+                <div class="photo-film-caption">✨ ${caption}</div>
+            `;
+
+            card.addEventListener('click', () => this.showLightbox(src, caption));
+            track.appendChild(card);
+        });
+    }
+
+    triggerAfterSparkles() {
+        setTimeout(() => {
+            this.showPhotoRoller();
+        }, 750);
+    }
+
+    showPhotoRoller() {
+        const overlay = document.getElementById('photoRollerOverlay');
+        if (!overlay) return;
+
+        this.scanAssetsFolder().then(() => this.renderFilmStrip());
+
+        overlay.classList.remove('hidden');
+        if (this.app && this.app.soundController) {
+            this.app.soundController.playSparkleChime();
+        }
+    }
+
+    hidePhotoRoller() {
+        const overlay = document.getElementById('photoRollerOverlay');
+        if (overlay) overlay.classList.add('hidden');
+    }
+
+    showLightbox(src, caption) {
+        const lightbox = document.getElementById('photoLightboxOverlay');
+        const img = document.getElementById('lightboxImg');
+        const cap = document.getElementById('lightboxCaption');
+
+        if (lightbox && img) {
+            img.src = src;
+            if (cap) cap.textContent = caption || 'Precious Memory Photo';
+            lightbox.classList.remove('hidden');
+        }
+    }
+
+    hideLightbox() {
+        const lightbox = document.getElementById('photoLightboxOverlay');
+        if (lightbox) lightbox.classList.add('hidden');
     }
 }
 

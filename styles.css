@@ -1577,4 +1577,232 @@ body {
     transition: transform 0.2s ease;
 }
 
+/* ==========================================================================
+   DYNAMIC PHOTO ROLLER SHOWCASE & FILM REEL MODAL
+   ========================================================================== */
+.photo-roller-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(10, 8, 20, 0.85);
+    backdrop-filter: blur(16px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 1;
+    transition: opacity 0.4s ease;
+}
+
+.photo-roller-modal {
+    background: radial-gradient(circle at center, rgba(28, 22, 54, 0.96) 0%, rgba(14, 11, 28, 0.98) 100%);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7), 0 0 40px rgba(157, 78, 221, 0.3);
+    width: 100%;
+    max-width: 950px;
+    padding: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    transform: scale(1);
+    animation: modalPopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalPopIn {
+    0% { transform: scale(0.85) translateY(20px); opacity: 0; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.photo-roller-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 1rem;
+}
+
+.photo-roller-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.roller-icon {
+    font-size: 1.8rem;
+}
+
+.photo-roller-title h3 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    color: var(--accent-gold);
+    text-shadow: 0 0 10px rgba(255, 209, 102, 0.3);
+}
+
+.photo-roller-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.roller-action-btn {
+    background: rgba(255, 215, 0, 0.15);
+    border: 1px solid rgba(255, 215, 0, 0.35);
+    color: var(--accent-gold);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.roller-action-btn:hover {
+    background: rgba(255, 215, 0, 0.3);
+    transform: scale(1.05);
+}
+
+.close-roller-btn, .close-lightbox-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.close-roller-btn:hover, .close-lightbox-btn:hover {
+    background: rgba(255, 77, 109, 0.4);
+    border-color: rgba(255, 77, 109, 0.6);
+    transform: rotate(90deg);
+}
+
+/* Film Strip Roller Track */
+.film-strip-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: #080610;
+    border-radius: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    padding: 18px 0;
+    box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.8);
+}
+
+.film-strip-track {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: max-content;
+    animation: filmReelScroll 24s linear infinite;
+    padding: 0 10px;
+}
+
+.film-strip-container:hover .film-strip-track {
+    animation-play-state: paused;
+}
+
+@keyframes filmReelScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.photo-film-card {
+    flex-shrink: 0;
+    width: 210px;
+    background: #ffffff;
+    padding: 10px 10px 14px 10px;
+    border-radius: 6px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.photo-film-card:hover {
+    transform: scale(1.08) rotate(0deg) translateY(-8px) !important;
+    z-index: 10;
+    box-shadow: 0 18px 35px rgba(255, 209, 102, 0.35), 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.photo-film-img-box {
+    width: 100%;
+    height: 160px;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #111;
+}
+
+.photo-film-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.photo-film-card:hover .photo-film-img-box img {
+    transform: scale(1.1);
+}
+
+.photo-film-caption {
+    font-family: var(--font-cursive);
+    font-size: 1.15rem;
+    color: #222;
+    text-align: center;
+    margin-top: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.photo-roller-hint {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+/* Lightbox Full Preview */
+.photo-lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    background: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.photo-lightbox-card {
+    position: relative;
+    max-width: 90vw;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.photo-lightbox-card img {
+    max-width: 85vw;
+    max-height: 75vh;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.lightbox-caption {
+    font-family: var(--font-heading);
+    color: var(--accent-gold);
+    font-size: 1.2rem;
+}
+
+
 
