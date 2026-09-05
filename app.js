@@ -82,7 +82,6 @@ class SoundController {
             this.bgAudio.pause();
         }
     }
-}
 
     initCtx() {
         if (!this.ctx) {
