@@ -1700,7 +1700,7 @@ body {
     align-items: center;
     gap: 20px;
     width: max-content;
-    animation: filmReelScroll 24s linear infinite;
+    animation: filmReelScroll 70s linear infinite;
     padding: 0 10px;
 }
 

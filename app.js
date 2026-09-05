@@ -978,6 +978,8 @@ class PhotoRollerController {
         if (!track || this.photos.length === 0) return;
 
         track.innerHTML = '';
+        const scrollDuration = Math.max(50, this.photos.length * 2.8);
+        track.style.animationDuration = `${scrollDuration}s`;
 
         const displayList = [...this.photos, ...this.photos, ...this.photos];
 
