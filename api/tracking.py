@@ -8,70 +8,70 @@ import time
 # Default fallback mock database if tracking number is not found or live request fails
 MOCK_DATABASE = {
     "order": "Special Birthday Gift 🎁",
-    "courier": "Shopee Xpress (SPX Premium)",
-    "trackingNumber": "SPX9284719283ID",
-    "estimatedDelivery": "2026-09-01T18:30:00Z",
-    "lastUpdate": "2026-09-01 10:30 WIB",
+    "courier": "Shopee Xpress (SPX Express)",
+    "trackingNumber": "SPXID065232769239",
+    "estimatedDelivery": "2026-09-06T18:30:00Z",
+    "lastUpdate": "2026-09-06 00:17 WIB",
     "secretMessage": "A magical handcrafted surprise full of warmth and sweet memories!",
     "timeline": [
         {
             "id": "ORDER_PLACED",
-            "title": "Order Placed",
-            "subtitle": "Your gift has started its journey.",
-            "location": "Jakarta Store",
-            "timestamp": "2026-08-31 09:00 WIB",
+            "title": "Pengirim Mengatur Pengiriman",
+            "subtitle": "Pengirim telah mengatur pengiriman. Menunggu pesanan diserahkan ke jasa kirim.",
+            "location": "Kalideres 2, Jakarta Barat",
+            "timestamp": "2026-09-05 17:01 WIB",
             "icon": "📦",
             "completed": True
         },
         {
             "id": "SELLER_PREPARING",
-            "title": "Seller Preparing",
-            "subtitle": "The birthday surprise is being prepared with special care...",
-            "location": "Seller Workshop",
-            "timestamp": "2026-08-31 14:15 WIB",
+            "title": "Pesanan Diterima Service Point",
+            "subtitle": "Pesanan diterima oleh Agen SPX Express Service Point Kalideres 2.",
+            "location": "Kalideres 2 Service Point",
+            "timestamp": "2026-09-05 17:22 WIB",
             "icon": "🏪",
             "completed": True
         },
         {
             "id": "PACKAGE_PICKED_UP",
-            "title": "Package Picked Up",
-            "subtitle": "Your gift has officially started traveling.",
-            "location": "Central Logistics Depot",
-            "timestamp": "2026-08-31 18:45 WIB",
+            "title": "Pesanan Diserahkan Ke Jasa Kirim",
+            "subtitle": "Pesanan dikirim dari lokasi transit Kalideres 9 First Mile Hub.",
+            "location": "Kalideres First Mile Hub",
+            "timestamp": "2026-09-05 21:01 WIB",
             "icon": "🚚",
             "completed": True
         },
         {
             "id": "SORTING_CENTER",
-            "title": "Sorting Center",
-            "subtitle": "Your gift is getting closer...",
-            "location": "Jakarta Hub Transit Center",
-            "timestamp": "2026-09-01 04:20 WIB",
+            "title": "Transit Point Kalideres DC",
+            "subtitle": "Pesanan disortir dan dikirim dari Kalideres DC ke Cakung 2 DC.",
+            "location": "Kalideres Transit Point DC",
+            "timestamp": "2026-09-05 21:53 WIB",
             "icon": "📍",
             "completed": True
         },
         {
             "id": "OUT_FOR_DELIVERY",
-            "title": "Out for Delivery",
-            "subtitle": "It's almost there! Courier is on the way to your door.",
-            "location": "Local Express Station",
-            "timestamp": "2026-09-01 10:30 WIB",
+            "title": "Diproses di Lokasi Sortir Cakung",
+            "subtitle": "Pesanan diproses di lokasi sortir Cakung 2 DC, Jakarta Timur.",
+            "location": "Cakung 2 DC, Jakarta Timur",
+            "timestamp": "2026-09-06 00:17 WIB",
             "icon": "🛵",
             "completed": True,
             "active": True
         },
         {
             "id": "DELIVERED",
-            "title": "Delivered",
-            "subtitle": "The surprise has arrived!",
-            "location": "Your Home",
-            "timestamp": "2026-09-01 --:--",
+            "title": "Tiba di Alamat Tujuan",
+            "subtitle": "Hadiah kejutan ulang tahun sampai di tanganmu dengan selamat! ❤️",
+            "location": "Alamat Tujuan",
+            "timestamp": "2026-09-06 --:--",
             "icon": "🎁",
             "completed": False
         }
     ],
     "status": "OUT_FOR_DELIVERY",
-    "currentLocation": "Local Express Station"
+    "currentLocation": "Cakung 2 DC, Jakarta Timur"
 }
 
 def fetch_spx_tracking(tracking_number):
@@ -198,7 +198,7 @@ class handler(BaseHTTPRequestHandler):
             tracking_num = query['spx_id'][0]
 
         result_data = None
-        if tracking_num and tracking_num.upper() != "SPX9284719283ID":
+        if tracking_num:
             spx_raw = fetch_spx_tracking(tracking_num)
             if spx_raw:
                 result_data = format_spx_response(spx_raw, tracking_num)

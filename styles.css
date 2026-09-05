@@ -1700,7 +1700,7 @@ body {
     align-items: center;
     gap: 20px;
     width: max-content;
-    animation: filmReelScroll 70s linear infinite;
+    animation: filmReelScroll 180s linear infinite;
     padding: 0 10px;
 }
 
@@ -1803,6 +1803,862 @@ body {
     color: var(--accent-gold);
     font-size: 1.2rem;
 }
+
+/* INTERACTIVE GIFT & LIVE SPX TRACKING STYLES */
+.clickable-gift {
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+    display: inline-block;
+    user-select: none;
+}
+
+.clickable-gift:hover {
+    transform: scale(1.25) rotate(-6deg);
+    filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.9));
+}
+
+.gift-hint-text {
+    font-size: 0.88rem;
+    color: var(--accent-gold-light);
+    margin-top: 8px;
+    font-style: italic;
+    opacity: 0.9;
+    animation: pulseSubtle 2s infinite ease-in-out;
+}
+
+@keyframes pulseSubtle {
+    0%, 100% { opacity: 0.7; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-2px); }
+}
+
+.spx-live-sync-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.15);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.live-pulse-dot {
+    color: #00ff88;
+    font-size: 1.1rem;
+    animation: livePulse 1.5s infinite alternate ease-in-out;
+}
+
+@keyframes livePulse {
+    0% { opacity: 0.4; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1.25); text-shadow: 0 0 10px #00ff88; }
+}
+
+.spx-official-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: rgba(238, 77, 45, 0.2);
+    border: 1px solid rgba(238, 77, 45, 0.6);
+    color: #ff7d52;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.spx-official-btn:hover {
+    background: #ee4d2d;
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(238, 77, 45, 0.4);
+    transform: translateY(-1px);
+}
+
+.view-gift-btn {
+    background: linear-gradient(135deg, #ff7e5f, #feb47b) !important;
+    color: #1a0f2e !important;
+    font-weight: 700 !important;
+    margin-top: 10px;
+}
+
+.view-gift-btn:hover {
+    transform: translateY(-2px) scale(1.03) !important;
+    box-shadow: 0 8px 25px rgba(255, 126, 95, 0.4) !important;
+}
+
+/* GIFT JOURNEY FULLSCREEN MODAL OVERLAY */
+.gift-journey-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1050;
+    background: rgba(8, 6, 18, 0.94);
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.gift-journey-overlay.hidden {
+    display: none !important;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.gift-journey-modal {
+    position: relative;
+    width: 94vw;
+    max-width: 1050px;
+    max-height: 92vh;
+    overflow-y: auto;
+    background: radial-gradient(circle at top left, #1c1433, #0b0717);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85), 0 0 35px rgba(255, 215, 0, 0.15);
+    padding: 28px 24px;
+}
+
+.close-gift-modal-btn {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    z-index: 100;
+}
+
+.close-gift-modal-btn:hover {
+    background: #ff4757;
+    border-color: #ff4757;
+    transform: scale(1.1) rotate(90deg);
+}
+
+/* ==========================================================================
+   LUXURIOUS 19TH BIRTHDAY CAKE COMPONENT
+   ========================================================================== */
+.cake-interactive-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    min-height: 380px;
+    position: relative;
+}
+
+.lux-cake-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.lux-cake-wrapper:hover {
+    transform: translateY(-8px) scale(1.04);
+}
+
+.cake-aura-glow {
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(255, 209, 102, 0.3) 0%, rgba(255, 107, 107, 0.15) 50%, transparent 75%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: cakeAuraPulse 3s infinite alternate ease-in-out;
+    z-index: 1;
+}
+
+@keyframes cakeAuraPulse {
+    0% { transform: scale(0.9); opacity: 0.6; }
+    100% { transform: scale(1.15); opacity: 0.95; }
+}
+
+/* CANDLES CROWN STAGE */
+.candles-crown-stage {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 16px;
+    position: relative;
+    z-index: 10;
+    margin-bottom: -6px;
+}
+
+.side-candle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gold-stick {
+    width: 10px;
+    height: 35px;
+    background: linear-gradient(180deg, #ffe066, #d4af37, #997a15);
+    border-radius: 4px;
+    box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.5), 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* NUMBER 19 CANDLES */
+.number-19-candles-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.num-candle-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.num-digit-badge {
+    font-family: 'Outfit', 'Inter', sans-serif;
+    font-size: 2.6rem;
+    font-weight: 900;
+    line-height: 1;
+    background: linear-gradient(135deg, #ffffff 0%, #ffd700 50%, #ff8c00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 10px rgba(255, 215, 0, 0.6));
+    border: 2px solid rgba(255, 215, 0, 0.8);
+    background-color: #1a0f2e;
+    padding: 2px 12px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+/* FLAMES */
+.candle-flame {
+    font-size: 1.8rem;
+    line-height: 1;
+    display: inline-block;
+    filter: drop-shadow(0 0 12px #ff9e00) drop-shadow(0 0 25px #ff4500);
+    animation: flameFlicker 0.4s infinite alternate ease-in-out;
+    transition: all 0.3s ease;
+}
+
+.side-flame {
+    font-size: 1.4rem;
+}
+
+.num-flame {
+    font-size: 2rem;
+    animation-duration: 0.35s;
+}
+
+@keyframes flameFlicker {
+    0% { transform: scale(1) rotate(-3deg); filter: drop-shadow(0 0 10px #ff9e00) drop-shadow(0 0 20px #ff4500); }
+    100% { transform: scale(1.18) rotate(3deg); filter: drop-shadow(0 0 16px #ffea00) drop-shadow(0 0 30px #ff0055); }
+}
+
+.candle-flame.blown-out {
+    opacity: 0 !important;
+    transform: scale(0.1) translateY(-15px) !important;
+    filter: none !important;
+}
+
+/* MULTI-TIER CAKE BODY */
+.lux-cake-3d-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 5;
+}
+
+.cake-tier {
+    position: relative;
+    border-radius: 12px;
+    box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.4), 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.top-tier {
+    width: 170px;
+    height: 55px;
+    background: linear-gradient(180deg, #fff0f5 0%, #ffb6c1 60%, #ff69b4 100%);
+    border-radius: 14px 14px 8px 8px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.frosting-drips {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    pointer-events: none;
+}
+
+.drip {
+    background: #fff0f5;
+    border-radius: 0 0 10px 10px;
+}
+.d1 { width: 14px; height: 12px; }
+.d2 { width: 18px; height: 18px; }
+.d3 { width: 12px; height: 10px; }
+.d4 { width: 20px; height: 16px; }
+.d5 { width: 15px; height: 12px; }
+
+.tier-toppings {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+}
+.topping-item { font-size: 1.1rem; }
+.glow-spark { animation: flameFlicker 0.8s infinite alternate; }
+
+.mid-tier {
+    width: 220px;
+    height: 65px;
+    margin-top: 4px;
+    background: linear-gradient(180deg, #5c2c16 0%, #3d1b0c 60%, #291106 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+.tier-banner {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #ffd700;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+.pearl-beads-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+    color: #fff8dc;
+    font-size: 0.6rem;
+    opacity: 0.8;
+}
+
+.base-tier {
+    width: 270px;
+    height: 60px;
+    margin-top: 4px;
+    background: linear-gradient(180deg, #c0392b 0%, #8e44ad 50%, #2c3e50 100%);
+    border: 2px solid #d4af37;
+    box-shadow: inset 0 0 15px rgba(212, 175, 55, 0.5);
+}
+
+.gold-emboss-pattern {
+    width: 100%;
+    height: 100%;
+    background-image: repeating-linear-gradient(45deg, rgba(212, 175, 55, 0.15) 0, rgba(212, 175, 55, 0.15) 10px, transparent 0, transparent 20px);
+}
+
+.gold-pedestal-stand {
+    width: 300px;
+    height: 16px;
+    background: linear-gradient(180deg, #ffe066 0%, #d4af37 60%, #997a15 100%);
+    border-radius: 20px;
+    margin-top: 4px;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6), inset 0 2px 4px rgba(255, 255, 255, 0.7);
+}
+
+/* SMOKE PARTICLES */
+.candle-smoke-particles {
+    position: absolute;
+    top: -20px;
+    display: flex;
+    gap: 15px;
+    pointer-events: none;
+    z-index: 20;
+    animation: floatSmoke 2.5s ease-out forwards;
+}
+
+@keyframes floatSmoke {
+    0% { opacity: 1; transform: translateY(0) scale(0.8); }
+    100% { opacity: 0; transform: translateY(-60px) scale(1.6); }
+}
+
+/* ==========================================================================
+   CHARACTER PORTRAIT CARD (CHAPTER 02)
+   ========================================================================== */
+.character-portrait-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    padding: 8px 10px;
+    max-width: 150px;
+    margin-left: auto;
+    margin-right: auto;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1.5px solid rgba(255, 215, 0, 0.35);
+    border-radius: 14px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 209, 102, 0.2);
+    backdrop-filter: blur(10px);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    animation: characterFloat 3.2s infinite alternate ease-in-out;
+}
+
+.character-portrait-card:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 12px 30px rgba(255, 215, 0, 0.4), 0 0 20px rgba(255, 182, 193, 0.35);
+}
+
+.portrait-glow-aura {
+    position: absolute;
+    inset: -8px;
+    background: radial-gradient(circle, rgba(255, 182, 193, 0.3) 0%, rgba(255, 215, 0, 0.2) 60%, transparent 85%);
+    border-radius: 18px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.cute-character-img {
+    position: relative;
+    z-index: 2;
+    max-width: 95px;
+    max-height: 95px;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.45));
+    transition: transform 0.35s ease;
+}
+
+.character-portrait-card:hover .cute-character-img {
+    transform: scale(1.08) rotate(3deg);
+}
+
+.portrait-caption {
+    position: relative;
+    z-index: 2;
+    margin-top: 4px;
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent-gold-light);
+    text-align: center;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+}
+
+@keyframes characterFloat {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-9px); }
+}
+
+/* ==========================================================================
+   INTRO PAGE STANDING CHARACTER COMPONENT
+   ========================================================================== */
+.intro-character-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    padding: 10px;
+    user-select: none;
+}
+
+.intro-character-aura {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, rgba(255, 107, 107, 0.15) 60%, transparent 80%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: introAuraPulse 3s infinite alternate ease-in-out;
+}
+
+@keyframes introAuraPulse {
+    0% { transform: scale(0.85); opacity: 0.5; }
+    100% { transform: scale(1.15); opacity: 0.9; }
+}
+
+.intro-character-img {
+    position: relative;
+    z-index: 2;
+    max-width: 120px;
+    max-height: 130px;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.5));
+    animation: introFloat 3s infinite alternate ease-in-out;
+    transition: transform 0.3s ease;
+}
+
+.intro-character-card:hover .intro-character-img {
+    transform: scale(1.08) rotate(-3deg);
+}
+
+@keyframes introFloat {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-8px); }
+}
+
+.intro-gift-badge {
+    position: absolute;
+    bottom: -4px;
+    right: 15%;
+    z-index: 3;
+    font-size: 1.5rem;
+    filter: drop-shadow(0 4px 10px rgba(255, 215, 0, 0.6));
+    animation: giftBadgeBounce 2s infinite alternate ease-in-out;
+}
+
+@keyframes giftBadgeBounce {
+    0% { transform: scale(1) rotate(0deg); }
+    100% { transform: scale(1.2) rotate(10deg); }
+}
+
+/* ==========================================================================
+   CHAPTER 01 STORY PAGE CHARACTER COMPONENT
+   ========================================================================== */
+.story-character-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 12px;
+    padding: 6px;
+    user-select: none;
+}
+
+.story-character-aura {
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.25) 0%, rgba(142, 68, 173, 0.15) 60%, transparent 80%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: storyAuraPulse 3s infinite alternate ease-in-out;
+}
+
+@keyframes storyAuraPulse {
+    0% { transform: scale(0.85); opacity: 0.5; }
+    100% { transform: scale(1.15); opacity: 0.9; }
+}
+
+.story-character-img {
+    position: relative;
+    z-index: 2;
+    max-width: 95px;
+    max-height: 105px;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
+    animation: storyFloat 3.2s infinite alternate ease-in-out;
+    transition: transform 0.3s ease;
+}
+
+.story-character-card:hover .story-character-img {
+    transform: scale(1.08) rotate(3deg);
+}
+
+@keyframes storyFloat {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-7px); }
+}
+
+/* ==========================================================================
+   CHAPTER 03 TULIP GARDEN CHARACTER COMPONENT
+   ========================================================================== */
+.tulip-character-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    padding: 6px;
+    user-select: none;
+}
+
+.tulip-character-aura {
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    background: radial-gradient(circle, rgba(255, 105, 180, 0.3) 0%, rgba(255, 215, 0, 0.2) 60%, transparent 80%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: tulipAuraPulse 3s infinite alternate ease-in-out;
+}
+
+@keyframes tulipAuraPulse {
+    0% { transform: scale(0.85); opacity: 0.5; }
+    100% { transform: scale(1.15); opacity: 0.9; }
+}
+
+.tulip-character-img {
+    position: relative;
+    z-index: 2;
+    max-width: 95px;
+    max-height: 105px;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
+    animation: tulipFloat 3.2s infinite alternate ease-in-out;
+    transition: transform 0.3s ease;
+}
+
+.tulip-character-card:hover .tulip-character-img {
+    transform: scale(1.08) rotate(-4deg);
+}
+
+@keyframes tulipFloat {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-7px); }
+}
+
+/* ==========================================================================
+   CHAPTER 04 BIRTHDAY CAKE CHARACTER COMPONENT
+   ========================================================================== */
+.cake-character-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    padding: 6px;
+    user-select: none;
+}
+
+.cake-character-aura {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.35) 0%, rgba(255, 105, 180, 0.2) 60%, transparent 80%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: cakeCharAuraPulse 3s infinite alternate ease-in-out;
+}
+
+@keyframes cakeCharAuraPulse {
+    0% { transform: scale(0.85); opacity: 0.5; }
+    100% { transform: scale(1.15); opacity: 0.9; }
+}
+
+.cake-character-img {
+    position: relative;
+    z-index: 2;
+    max-width: 110px;
+    max-height: 115px;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.5));
+    animation: cakeCharFloat 3.2s infinite alternate ease-in-out;
+    transition: transform 0.3s ease;
+}
+
+.cake-character-card:hover .cake-character-img {
+    transform: scale(1.08) rotate(3deg);
+}
+
+@keyframes cakeCharFloat {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-7px); }
+}
+
+/* ==========================================================================
+   CHAPTER 05 BIRTHDAY MESSAGE CHARACTER COMPONENT ("Aamiin" Praying Dino)
+   ========================================================================== */
+.message-character-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    padding: 6px;
+    user-select: none;
+}
+
+.message-character-aura {
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.35) 0%, rgba(255, 182, 193, 0.25) 60%, transparent 80%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: messageCharAuraPulse 3s infinite alternate ease-in-out;
+}
+
+@keyframes messageCharAuraPulse {
+    0% { transform: scale(0.85); opacity: 0.5; }
+    100% { transform: scale(1.15); opacity: 0.9; }
+}
+
+.message-character-img {
+    position: relative;
+    z-index: 2;
+    max-width: 100px;
+    max-height: 105px;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.5));
+    animation: messageCharFloat 3.2s infinite alternate ease-in-out;
+    transition: transform 0.3s ease;
+}
+
+.message-character-card:hover .message-character-img {
+    transform: scale(1.08) rotate(-3deg);
+}
+
+@keyframes messageCharFloat {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-7px); }
+}
+
+/* ==========================================================================
+   CHAPTER 06 FINALE PAGE CHARACTER COMPONENT ("Mana senyumnya sayangku?")
+   ========================================================================== */
+.finale-character-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 14px;
+    padding: 6px;
+    user-select: none;
+}
+
+.finale-character-aura {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.4) 0%, rgba(255, 105, 180, 0.25) 60%, transparent 80%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: finaleCharAuraPulse 3s infinite alternate ease-in-out;
+}
+
+@keyframes finaleCharAuraPulse {
+    0% { transform: scale(0.85); opacity: 0.5; }
+    100% { transform: scale(1.15); opacity: 0.9; }
+}
+
+.finale-character-img {
+    position: relative;
+    z-index: 2;
+    max-width: 115px;
+    max-height: 120px;
+    object-fit: contain;
+    border-radius: 12px;
+    filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.55));
+    animation: finaleCharFloat 3s infinite alternate ease-in-out;
+    transition: transform 0.3s ease;
+}
+
+.finale-character-card:hover .finale-character-img {
+    transform: scale(1.08) rotate(3deg);
+}
+
+@keyframes finaleCharFloat {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-8px); }
+}
+
+/* ==========================================================================
+   CHAPTER 08 SPECIAL ENDING CHARACTER COMPONENT ("Kamu Ayang Aku Bukan?")
+   ========================================================================== */
+.ending-character-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 12px;
+    padding: 8px;
+    user-select: none;
+}
+
+.ending-character-aura {
+    position: absolute;
+    width: 130px;
+    height: 130px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.45) 0%, rgba(255, 182, 193, 0.3) 60%, transparent 80%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: endingCharAuraPulse 2.8s infinite alternate ease-in-out;
+}
+
+@keyframes endingCharAuraPulse {
+    0% { transform: scale(0.85); opacity: 0.5; }
+    100% { transform: scale(1.2); opacity: 0.95; }
+}
+
+.ending-character-img {
+    position: relative;
+    z-index: 2;
+    max-width: 120px;
+    max-height: 125px;
+    object-fit: contain;
+    border-radius: 14px;
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.6));
+    animation: endingCharFloat 3s infinite alternate ease-in-out;
+    transition: transform 0.35s ease;
+}
+
+.ending-character-card:hover .ending-character-img {
+    transform: scale(1.1) rotate(-3deg);
+}
+
+@keyframes endingCharFloat {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-9px); }
+}
+
+/* Solo Ending Layout (Page 8 of 8 - Photo Only) */
+.ending-solo-spread {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100%;
+    height: 100%;
+    min-height: 380px;
+}
+
+.ending-solo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.solo-ending-card {
+    margin-top: 0 !important;
+}
+
+.solo-ending-card .ending-character-aura {
+    width: 240px;
+    height: 240px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.5) 0%, rgba(255, 182, 193, 0.35) 60%, transparent 80%);
+}
+
+.solo-ending-card .ending-character-img {
+    max-width: 230px;
+    max-height: 240px;
+    border-radius: 20px;
+    filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.75));
+}
+
+
+
+
+
 
 
 

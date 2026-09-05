@@ -140,7 +140,11 @@
                                     <div class="chapter-badge">Intro</div>
                                     <h2 class="chapter-heading">Welcome to Your Birthday Book 🌟</h2>
                                     <div class="welcome-illustration">
-                                        <div class="floating-magic-box">🎁</div>
+                                        <div class="intro-character-card">
+                                            <div class="intro-character-aura"></div>
+                                            <img src="assets/intro_character.png" alt="Welcome Character" class="intro-character-img">
+                                            <div class="intro-gift-badge">🎁✨</div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="page-half page-right">
@@ -163,6 +167,10 @@
                                     <p class="paragraph">
                                         Every second that ticks on the clock marks moments of laughter, growth, and precious memories made throughout this past year.
                                     </p>
+                                    <div class="story-character-card">
+                                        <div class="story-character-aura"></div>
+                                        <img src="assets/story_character.png" alt="Thoughtful Story Character" class="story-character-img">
+                                    </div>
                                 </div>
                                 <div class="page-half page-right">
                                     <blockquote class="magical-quote">
@@ -181,19 +189,26 @@
                                 <div class="page-half page-left">
                                     <div class="chapter-badge">Chapter 02</div>
                                     <h2 class="chapter-heading">Precious Memories & Moments 🖼️</h2>
+                                    
+                                    <!-- Cute Character Portrait Card -->
+                                    <div class="character-portrait-card">
+                                        <div class="portrait-glow-aura"></div>
+                                        <img src="assets/cute_character.png" alt="Sweet Cute Character" class="cute-character-img">
+                                        <div class="portrait-caption">🥰 Precious Smiles & Warm Memories ❤️</div>
+                                    </div>
+                                </div>
+                                <div class="page-half page-right">
                                     <div class="memory-card">
                                         <div class="memory-icon">🌟</div>
                                         <h3>First Spark</h3>
                                         <p>Every journey begins with a single bright idea and happy memory.</p>
                                     </div>
-                                </div>
-                                <div class="page-half page-right">
-                                    <div class="memory-card">
+                                    <div class="memory-card" style="margin-top: 0.8rem;">
                                         <div class="memory-icon">🌸</div>
                                         <h3>Joyful Laughs</h3>
                                         <p>Sharing simple moments that turn ordinary days into extraordinary memories.</p>
                                     </div>
-                                    <div class="memory-card" style="margin-top: 1rem;">
+                                    <div class="memory-card" style="margin-top: 0.8rem;">
                                         <div class="memory-icon">💫</div>
                                         <h3>Bright Dreams</h3>
                                         <p>Looking forward to all the amazing milestones awaiting you this year.</p>
@@ -211,6 +226,10 @@
                                     <p class="paragraph">
                                         Tulips symbolize deep affection and fresh beginnings. Touch the garden to make flowers bloom!
                                     </p>
+                                    <div class="tulip-character-card">
+                                        <div class="tulip-character-aura"></div>
+                                        <img src="assets/tulip_character.png" alt="Playful Tulip Character" class="tulip-character-img">
+                                    </div>
                                 </div>
                                 <div class="page-half page-right">
                                     <div class="tulip-canvas-container" id="tulipCanvasContainer">
@@ -221,150 +240,120 @@
                             </div>
                         </article>
 
-                        <!-- CHAPTER 5: GIFT JOURNEY -->
+                        <!-- CHAPTER 5: BIRTHDAY CAKE -->
                         <article class="page-chapter" id="chapter-5" data-chapter="5">
                             <div class="spread-two-pages">
                                 <div class="page-half page-left">
-                                    <div class="chapter-badge glow-badge">Chapter 04 • Birthday Gift</div>
-                                    <h2 class="journey-main-title">"While you're reading this..."</h2>
-                                    <p class="journey-sub-headline">There's a little surprise making its way to you.</p>
-
-                                    <!-- Secret Mode Overlay -->
-                                    <div class="secret-mode-overlay hidden" id="secretModeOverlay">
-                                        <div class="secret-card-inner">
-                                            <div class="secret-icon-anim">🤫✨</div>
-                                            <h3>Something special is on its way...</h3>
-                                            <p>The details of your birthday surprise are safely hidden in Secret Mode.</p>
-                                            <button class="action-btn glow-btn" id="revealSecretBtn">TRACK THE SURPRISE ✨</button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Tracking Details Info Box -->
-                                    <div class="info-details-card" id="trackingInfoCard">
-                                        <div class="info-group">
-                                            <span class="info-label">Order</span>
-                                            <span class="info-value highlight-val" id="infoOrder">Birthday Gift</span>
-                                        </div>
-                                        <div class="info-group">
-                                            <span class="info-label">Tracking Number</span>
-                                            <div class="tracking-num-wrapper">
-                                                <span class="info-value code-font" id="infoTrackingNum">SPX9284719283ID</span>
-                                                <button class="copy-btn" id="copyTrackingBtn" title="Copy Tracking Number">📋</button>
-                                                <button class="copy-btn edit-tracking-btn" id="changeTrackingBtn" title="Track Live SPX Package">✏️</button>
-                                            </div>
-                                        </div>
-                                        <div class="info-group">
-                                            <span class="info-label">Status</span>
-                                            <span class="info-value status-badge" id="infoCurrentStatus">OUT FOR DELIVERY</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="page-half page-right">
-                                    <div class="tracking-content-wrapper" id="trackingContentWrapper">
-                                        <!-- Countdown Card -->
-                                        <div class="countdown-card" id="countdownCard">
-                                            <div class="countdown-header">
-                                                <span class="clock-icon">⏳</span>
-                                                <span id="countdownLabelText">Arriving around...</span>
-                                            </div>
-                                            <div class="countdown-timer" id="countdownTimer">
-                                                <div class="time-block"><span id="cdDays">00</span><label>D</label></div>
-                                                <div class="time-colon">:</div>
-                                                <div class="time-block"><span id="cdHours">00</span><label>H</label></div>
-                                                <div class="time-colon">:</div>
-                                                <div class="time-block"><span id="cdMins">00</span><label>M</label></div>
-                                                <div class="time-colon">:</div>
-                                                <div class="time-block"><span id="cdSecs">00</span><label>S</label></div>
-                                            </div>
-                                            <div class="delivered-message hidden" id="deliveredMsg">
-                                                🎉 Package Delivered! 🎁
-                                            </div>
-                                        </div>
-
-                                        <!-- Mini Route Map -->
-                                        <div class="mini-map-container" id="miniMapContainer">
-                                            <div class="map-grid-bg"></div>
-                                            <canvas id="routeCanvas"></canvas>
-                                            
-                                            <!-- 3D Runner -->
-                                            <div class="package-3d-runner" id="package3dRunner">
-                                                <div class="package-box-inner" id="packageBoxInner">
-                                                    <span class="runner-icon" id="runnerIcon">📦</span>
-                                                </div>
-                                                <div class="package-shadow"></div>
-                                            </div>
-
-                                            <div class="map-checkpoints-layer">
-                                                <div class="map-node" style="left: 10%; top: 50%;" data-node="ORDER_PLACED"><div class="node-pin">📦</div></div>
-                                                <div class="map-node" style="left: 30%; top: 35%;" data-node="SELLER_PREPARING"><div class="node-pin">🏪</div></div>
-                                                <div class="map-node" style="left: 50%; top: 65%;" data-node="PACKAGE_PICKED_UP"><div class="node-pin">🚚</div></div>
-                                                <div class="map-node" style="left: 70%; top: 40%;" data-node="SORTING_CENTER"><div class="node-pin">📍</div></div>
-                                                <div class="map-node" style="left: 85%; top: 70%;" data-node="OUT_FOR_DELIVERY"><div class="node-pin">🛵</div></div>
-                                                <div class="map-node" style="left: 95%; top: 50%;" data-node="DELIVERED"><div class="node-pin">🏠</div></div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Timeline Progress -->
-                                        <div class="timeline-container">
-                                            <h3 class="timeline-title">Journey Steps</h3>
-                                            <div class="timeline-list" id="timelineList"></div>
-                                        </div>
-
-                                        <!-- Fallback Error Card -->
-                                        <div class="fallback-error-card hidden" id="fallbackErrorCard">
-                                            <div class="error-sparkle">✨</div>
-                                            <h3 class="error-title">Gift on its way...</h3>
-                                            <button class="action-btn refresh-btn" id="refreshJourneyBtn">REFRESH 🔄</button>
-                                        </div>
-
-                                        <!-- Delivered Celebration Showcase -->
-                                        <div class="delivered-celebration-box hidden" id="deliveredCelebrationBox">
-                                            <canvas id="celebrationCanvas"></canvas>
-                                            <div class="celebration-content">
-                                                <div class="unboxed-gift">🌷🎂🎁</div>
-                                                <h3 class="celebration-title">The surprise has arrived! ❤️</h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-
-                        <!-- CHAPTER 6: BIRTHDAY CAKE -->
-                        <article class="page-chapter" id="chapter-6" data-chapter="6">
-                            <div class="spread-two-pages">
-                                <div class="page-half page-left">
-                                    <div class="chapter-badge">Chapter 05</div>
+                                    <div class="chapter-badge">Chapter 04</div>
                                     <h2 class="chapter-heading">Make a Birthday Wish 🎂</h2>
                                     <p class="paragraph">
                                         Touch the candle flame to blow it out and make your special wish!
                                     </p>
                                     <div class="wish-toast hidden" id="wishToast">✨ May all your dreams come true! ✨</div>
+                                    <div class="cake-character-card">
+                                        <div class="cake-character-aura"></div>
+                                        <img src="assets/cake_character.png" alt="Selamat Ulang Tahun Character" class="cake-character-img">
+                                    </div>
                                 </div>
                                 <div class="page-half page-right">
                                     <div class="cake-interactive-area" id="cakeInteractiveArea">
-                                        <div class="cake-visual">
-                                            <div class="candle-flame" id="candleFlame">🔥</div>
-                                            <div class="candle">🕯️</div>
-                                            <div class="cake-emoji">🎂</div>
+                                        <div class="lux-cake-wrapper" id="luxCakeWrapper" title="Touch candle flames to blow out your 19th birthday wish! ✨">
+                                            <!-- Golden Warm Glow Aura -->
+                                            <div class="cake-aura-glow"></div>
+                                            
+                                            <!-- Candles Crown Stage -->
+                                            <div class="candles-crown-stage">
+                                                <!-- Side Candle Left -->
+                                                <div class="side-candle side-left">
+                                                    <div class="candle-flame side-flame" id="flameLeft">🔥</div>
+                                                    <div class="candle-stick gold-stick"></div>
+                                                </div>
+
+                                                <!-- NUMBER 19 CANDLES (CENTERPIECE) -->
+                                                <div class="number-19-candles-container">
+                                                    <div class="num-candle-wrapper num-1">
+                                                        <div class="candle-flame num-flame" id="flameNum1">🔥</div>
+                                                        <div class="num-digit-badge">1</div>
+                                                    </div>
+                                                    <div class="num-candle-wrapper num-9">
+                                                        <div class="candle-flame num-flame" id="flameNum9">🔥</div>
+                                                        <div class="num-digit-badge">9</div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Side Candle Right -->
+                                                <div class="side-candle side-right">
+                                                    <div class="candle-flame side-flame" id="flameRight">🔥</div>
+                                                    <div class="candle-stick gold-stick"></div>
+                                                </div>
+                                            </div>
+
+                                            <!-- LUXURIOUS MULTI-TIER CAKE STRUCTURE -->
+                                            <div class="lux-cake-3d-body">
+                                                <!-- Top Cream Tier -->
+                                                <div class="cake-tier top-tier">
+                                                    <div class="frosting-drips">
+                                                        <span class="drip d1"></span>
+                                                        <span class="drip d2"></span>
+                                                        <span class="drip d3"></span>
+                                                        <span class="drip d4"></span>
+                                                        <span class="drip d5"></span>
+                                                    </div>
+                                                    <div class="tier-toppings">
+                                                        <span class="topping-item">🍓</span>
+                                                        <span class="topping-item glow-spark">✨</span>
+                                                        <span class="topping-item">🍓</span>
+                                                        <span class="topping-item glow-spark">✨</span>
+                                                        <span class="topping-item">🍓</span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Middle Chocolate Tier -->
+                                                <div class="cake-tier mid-tier">
+                                                    <div class="tier-banner">✨ 19th Birthday ✨</div>
+                                                    <div class="pearl-beads-row">
+                                                        <i>●</i><i>●</i><i>●</i><i>●</i><i>●</i><i>●</i><i>●</i>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Bottom Royal Gold Tier -->
+                                                <div class="cake-tier base-tier">
+                                                    <div class="gold-emboss-pattern"></div>
+                                                </div>
+
+                                                <!-- Golden Pedestal Plate -->
+                                                <div class="gold-pedestal-stand">
+                                                    <div class="stand-plate"></div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Smoke Effect Container when Blown Out -->
+                                            <div class="candle-smoke-particles hidden" id="candleSmoke">
+                                                <span class="smoke-puff p1">💨</span>
+                                                <span class="smoke-puff p2">✨</span>
+                                                <span class="smoke-puff p3">💨</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </article>
 
-                        <!-- CHAPTER 7: BIRTHDAY MESSAGE -->
-                        <article class="page-chapter" id="chapter-7" data-chapter="7">
+                        <!-- CHAPTER 6: BIRTHDAY MESSAGE -->
+                        <article class="page-chapter" id="chapter-6" data-chapter="6">
                             <div class="spread-two-pages">
                                 <div class="page-half page-left">
-                                    <div class="chapter-badge">Chapter 06</div>
+                                    <div class="chapter-badge">Chapter 05</div>
                                     <h2 class="chapter-heading">A Special Birthday Message 💌</h2>
                                     <div class="letter-container">
                                         <p class="letter-heading">Dear Special Someone,</p>
                                         <p class="letter-body">
                                             On this wonderful day, I want to wish you endless happiness, beautiful adventures, peace, and good health.
                                         </p>
+                                    </div>
+                                    <div class="message-character-card">
+                                        <div class="message-character-aura"></div>
+                                        <img src="assets/message_character.png" alt="Aamiin Praying Character" class="message-character-img">
                                     </div>
                                 </div>
                                 <div class="page-half page-right">
@@ -378,17 +367,34 @@
                             </div>
                         </article>
 
-                        <!-- CHAPTER 8: FINAL CELEBRATION -->
-                        <article class="page-chapter" id="chapter-8" data-chapter="8">
+                        <!-- CHAPTER 7: FINAL CELEBRATION -->
+                        <article class="page-chapter" id="chapter-7" data-chapter="7">
                             <div class="spread-two-pages">
                                 <div class="page-half page-left">
                                     <div class="chapter-badge glow-badge">Finale</div>
                                     <h2 class="chapter-heading">Happy Birthday! 🎉</h2>
-                                    <div class="big-gift-icon">🎁✨</div>
+                                    <div class="big-gift-icon clickable-gift" id="finaleGiftIcon" title="Click gift to view package delivery journey 🎁">🎁✨</div>
+                                    <p class="gift-hint-text">✨ Click gift to track delivery status 🚚</p>
                                 </div>
                                 <div class="page-half page-right final-card">
                                     <p class="paragraph">Thank you for being part of this magical journey!</p>
                                     <button class="action-btn celebrate-big-btn" id="finalCelebrateBtn">Release Sparkles & Confetti 🎉</button>
+                                    <div class="finale-character-card">
+                                        <div class="finale-character-aura"></div>
+                                        <img src="assets/finale_character.png" alt="Mana senyumnya sayangku character" class="finale-character-img">
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- CHAPTER 8: SPECIAL ENDING (PAGE 8 OF 8) -->
+                        <article class="page-chapter" id="chapter-8" data-chapter="8">
+                            <div class="spread-two-pages ending-solo-spread">
+                                <div class="ending-solo-container">
+                                    <div class="ending-character-card solo-ending-card">
+                                        <div class="ending-character-aura"></div>
+                                        <img src="assets/ending_character.png" alt="Kamu Ayang Aku Bukan Crown Character" class="ending-character-img">
+                                    </div>
                                 </div>
                             </div>
                         </article>
@@ -406,6 +412,126 @@
 
         </div> <!-- End book-perspective-wrapper -->
     </main>
+
+    <!-- GIFT JOURNEY & SPX TRACKING MODAL OVERLAY -->
+    <div class="gift-journey-overlay hidden" id="giftJourneyOverlay">
+        <div class="gift-journey-modal">
+            <button class="close-gift-modal-btn" id="closeGiftModalBtn" title="Close Gift Journey">✖</button>
+            <div class="spread-two-pages">
+                <div class="page-half page-left">
+                    <div class="chapter-badge glow-badge">Special Gift • SPX Live Tracking</div>
+                    <h2 class="journey-main-title">"While you're reading this..."</h2>
+                    <p class="journey-sub-headline">There's a little surprise making its way to you.</p>
+
+                    <!-- Secret Mode Overlay -->
+                    <div class="secret-mode-overlay hidden" id="secretModeOverlay">
+                        <div class="secret-card-inner">
+                            <div class="secret-icon-anim">🤫✨</div>
+                            <h3>Something special is on its way...</h3>
+                            <p>The details of your birthday surprise are safely hidden in Secret Mode.</p>
+                            <button class="action-btn glow-btn" id="revealSecretBtn">TRACK THE SURPRISE ✨</button>
+                        </div>
+                    </div>
+
+                    <!-- Tracking Details Info Box -->
+                    <div class="info-details-card" id="trackingInfoCard">
+                        <div class="info-group">
+                            <span class="info-label">Order</span>
+                            <span class="info-value highlight-val" id="infoOrder">Birthday Gift</span>
+                        </div>
+                        <div class="info-group">
+                            <span class="info-label">Tracking Number</span>
+                            <div class="tracking-num-wrapper">
+                                <span class="info-value code-font" id="infoTrackingNum">SPXID065232769239</span>
+                                <button class="copy-btn" id="copyTrackingBtn" title="Copy Tracking Number">📋</button>
+                                <button class="copy-btn edit-tracking-btn" id="changeTrackingBtn" title="Track Live SPX Package">✏️</button>
+                            </div>
+                        </div>
+                        <div class="info-group">
+                            <span class="info-label">Status</span>
+                            <span class="info-value status-badge" id="infoCurrentStatus">OUT FOR DELIVERY</span>
+                        </div>
+                        <div class="spx-live-sync-bar">
+                            <span class="live-pulse-dot">●</span>
+                            <span id="spxLiveSyncText">LIVE AUTO-SYNC: Active</span>
+                            <a href="https://spx.co.id/track?SPXID065232769239" target="_blank" rel="noopener" class="spx-official-btn" title="Validate Live Tracking on Official SPX Website">
+                                🌐 Cek di spx.co.id
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-half page-right">
+                    <div class="tracking-content-wrapper" id="trackingContentWrapper">
+                        <!-- Countdown Card -->
+                        <div class="countdown-card" id="countdownCard">
+                            <div class="countdown-header">
+                                <span class="clock-icon">⏳</span>
+                                <span id="countdownLabelText">Arriving around...</span>
+                            </div>
+                            <div class="countdown-timer" id="countdownTimer">
+                                <div class="time-block"><span id="cdDays">00</span><label>D</label></div>
+                                <div class="time-colon">:</div>
+                                <div class="time-block"><span id="cdHours">00</span><label>H</label></div>
+                                <div class="time-colon">:</div>
+                                <div class="time-block"><span id="cdMins">00</span><label>M</label></div>
+                                <div class="time-colon">:</div>
+                                <div class="time-block"><span id="cdSecs">00</span><label>S</label></div>
+                            </div>
+                            <div class="delivered-message hidden" id="deliveredMsg">
+                                🎉 Package Delivered! 🎁
+                            </div>
+                        </div>
+
+                        <!-- Mini Route Map -->
+                        <div class="mini-map-container" id="miniMapContainer">
+                            <div class="map-grid-bg"></div>
+                            <canvas id="routeCanvas"></canvas>
+                            
+                            <!-- 3D Runner -->
+                            <div class="package-3d-runner" id="package3dRunner">
+                                <div class="package-box-inner" id="packageBoxInner">
+                                    <span class="runner-icon" id="runnerIcon">📦</span>
+                                </div>
+                                <div class="package-shadow"></div>
+                            </div>
+
+                            <div class="map-checkpoints-layer">
+                                <div class="map-node" style="left: 10%; top: 50%;" data-node="ORDER_PLACED"><div class="node-pin">📦</div></div>
+                                <div class="map-node" style="left: 30%; top: 35%;" data-node="SELLER_PREPARING"><div class="node-pin">🏪</div></div>
+                                <div class="map-node" style="left: 50%; top: 65%;" data-node="PACKAGE_PICKED_UP"><div class="node-pin">🚚</div></div>
+                                <div class="map-node" style="left: 70%; top: 40%;" data-node="SORTING_CENTER"><div class="node-pin">📍</div></div>
+                                <div class="map-node" style="left: 85%; top: 70%;" data-node="OUT_FOR_DELIVERY"><div class="node-pin">🛵</div></div>
+                                <div class="map-node" style="left: 95%; top: 50%;" data-node="DELIVERED"><div class="node-pin">🏠</div></div>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Progress -->
+                        <div class="timeline-container">
+                            <h3 class="timeline-title">Journey Steps</h3>
+                            <div class="timeline-list" id="timelineList"></div>
+                        </div>
+
+                        <!-- Fallback Error Card -->
+                        <div class="fallback-error-card hidden" id="fallbackErrorCard">
+                            <div class="error-sparkle">✨</div>
+                            <h3 class="error-title">Gift on its way...</h3>
+                            <button class="action-btn refresh-btn" id="refreshJourneyBtn">REFRESH 🔄</button>
+                        </div>
+
+                        <!-- Delivered Celebration Showcase -->
+                        <div class="delivered-celebration-box hidden" id="deliveredCelebrationBox">
+                            <canvas id="celebrationCanvas"></canvas>
+                            <div class="celebration-content">
+                                <div class="unboxed-gift">🌷🎂🎁</div>
+                                <h3 class="celebration-title">The surprise has arrived! ❤️</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- DYNAMIC PHOTO ROLLER SHOWCASE MODAL -->
     <div class="photo-roller-overlay hidden" id="photoRollerOverlay">
@@ -430,7 +556,7 @@
                 <div class="film-perforations bottom"></div>
             </div>
 
-            <p class="photo-roller-hint">💡 Hover or click any photo to inspect full size • Auto-loaded from <code>assets/</code></p>
+            <p class="photo-roller-hint">💡 Hover or click any photo to inspect full size </p>
         </div>
     </div>
 

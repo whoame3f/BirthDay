@@ -7,46 +7,51 @@ class TrackingService {
         this.apiBaseUrl = apiBaseUrl;
         this.fallbackData = {
             "order": "Special Birthday Gift 🎁",
-            "courier": "Shopee Xpress (SPX Premium)",
-            "trackingNumber": "SPX9284719283ID",
-            "estimatedDelivery": "2026-09-01T18:30:00Z",
-            "lastUpdate": "2026-09-01 10:30 WIB",
+            "courier": "Shopee Xpress (SPX Express)",
+            "trackingNumber": "SPXID065232769239",
+            "estimatedDelivery": "2026-09-06T18:30:00Z",
+            "lastUpdate": "2026-09-06 00:17 WIB",
             "secretMessage": "A magical handcrafted surprise full of warmth and sweet memories!",
             "timeline": [
-                { "id": "ORDER_PLACED", "title": "Order Placed", "subtitle": "Your gift has started its journey.", "location": "Jakarta Store", "timestamp": "2026-08-31 09:00 WIB", "icon": "📦", "completed": true },
-                { "id": "SELLER_PREPARING", "title": "Seller Preparing", "subtitle": "The birthday surprise is being prepared with special care...", "location": "Seller Workshop", "timestamp": "2026-08-31 14:15 WIB", "icon": "🏪", "completed": true },
-                { "id": "PACKAGE_PICKED_UP", "title": "Package Picked Up", "subtitle": "Your gift has officially started traveling.", "location": "Central Logistics Depot", "timestamp": "2026-08-31 18:45 WIB", "icon": "🚚", "completed": true },
-                { "id": "SORTING_CENTER", "title": "Sorting Center", "subtitle": "Your gift is getting closer...", "location": "Jakarta Hub Transit Center", "timestamp": "2026-09-01 04:20 WIB", "icon": "📍", "completed": true },
-                { "id": "OUT_FOR_DELIVERY", "title": "Out for Delivery", "subtitle": "It's almost there! Courier is on the way to your door.", "location": "Local Express Station", "timestamp": "2026-09-01 10:30 WIB", "icon": "🛵", "completed": true, "active": true },
-                { "id": "DELIVERED", "title": "Delivered", "subtitle": "The surprise has arrived!", "location": "Your Home", "timestamp": "2026-09-01 --:--", "icon": "🎁", "completed": false }
+                { "id": "ORDER_PLACED", "title": "Pengirim Mengatur Pengiriman", "subtitle": "Pengirim telah mengatur pengiriman. Menunggu pesanan diserahkan ke jasa kirim.", "location": "Kalideres 2, Jakarta Barat", "timestamp": "2026-09-05 17:01 WIB", "icon": "📦", "completed": true },
+                { "id": "SELLER_PREPARING", "title": "Pesanan Diterima Service Point", "subtitle": "Pesanan diterima oleh Agen SPX Express Service Point Kalideres 2.", "location": "Kalideres 2 Service Point", "timestamp": "2026-09-05 17:22 WIB", "icon": "🏪", "completed": true },
+                { "id": "PACKAGE_PICKED_UP", "title": "Pesanan Diserahkan Ke Jasa Kirim", "subtitle": "Pesanan dikirim dari lokasi transit Kalideres 9 First Mile Hub.", "location": "Kalideres First Mile Hub", "timestamp": "2026-09-05 21:01 WIB", "icon": "🚚", "completed": true },
+                { "id": "SORTING_CENTER", "title": "Transit Point Kalideres DC", "subtitle": "Pesanan disortir dan dikirim dari Kalideres DC ke Cakung 2 DC.", "location": "Kalideres Transit Point DC", "timestamp": "2026-09-05 21:53 WIB", "icon": "📍", "completed": true },
+                { "id": "OUT_FOR_DELIVERY", "title": "Diproses di Lokasi Sortir Cakung", "subtitle": "Pesanan diproses di lokasi sortir Cakung 2 DC, Jakarta Timur.", "location": "Cakung 2 DC, Jakarta Timur", "timestamp": "2026-09-06 00:17 WIB", "icon": "🛵", "completed": true, "active": true },
+                { "id": "DELIVERED", "title": "Tiba di Alamat Tujuan", "subtitle": "Hadiah kejutan ulang tahun sampai di tanganmu dengan selamat! ❤️", "location": "Alamat Tujuan", "timestamp": "2026-09-06 --:--", "icon": "🎁", "completed": false }
             ],
             "status": "OUT_FOR_DELIVERY",
-            "currentLocation": "Local Express Station"
+            "currentLocation": "Cakung 2 DC, Jakarta Timur"
         };
     }
 
     async getTrackingInfo(params = {}) {
+        params._t = Date.now(); // Cache busting for dynamic auto-updates
         const urlParams = new URLSearchParams(params).toString();
         const fetchUrl = urlParams ? `${this.apiBaseUrl}?${urlParams}` : this.apiBaseUrl;
 
         try {
-            const response = await fetch(fetchUrl);
+            const response = await fetch(fetchUrl, { cache: 'no-store' });
             if (response.ok) {
                 return await response.json();
             }
             throw new Error(`Primary endpoint returned ${response.status}`);
         } catch (primaryErr) {
             try {
-                // Try fallback to static JSON asset (for static deployment hosts like Vercel)
-                const fallbackResponse = await fetch('./api/tracking_static.json');
+                // Try fallback to static JSON asset with cache-buster
+                const fallbackResponse = await fetch(`./api/tracking_static.json?_t=${Date.now()}`, { cache: 'no-store' });
                 if (fallbackResponse.ok) {
-                    return await fallbackResponse.json();
+                    const json = await fallbackResponse.json();
+                    json.lastUpdate = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB (Auto-Synced)';
+                    return json;
                 }
             } catch (fallbackErr) {
                 console.warn('Fallback JSON fetch failed, using embedded tracking data:', fallbackErr);
             }
-            // If offline or file:// protocol, return embedded fallback data
-            return this.fallbackData;
+            // If offline or file:// protocol, return embedded fallback data with dynamic time
+            const dynamicFallback = JSON.parse(JSON.stringify(this.fallbackData));
+            dynamicFallback.lastUpdate = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB (Auto-Synced)';
+            return dynamicFallback;
         }
     }
 }
@@ -226,10 +231,9 @@ class PhysicalBookController {
         this.chapterTitles = [
             "Closed Book",
             "Intro 🌟",
-            "Story 📜",
             "Memories 🖼️",
+            "A Special Flower 🌸",
             "Tulip Garden 🌷",
-            "Gift Journey 🎁",
             "Birthday Cake 🎂",
             "Message 💌",
             "Celebration 🎉"
@@ -351,13 +355,13 @@ class PhysicalBookController {
             refreshBtn.addEventListener('click', () => this.loadTrackingData());
         }
 
-        // Cake Candle Blowout
-        const cakeArea = document.querySelector('.cake-visual');
+        // 19th Birthday Cake Candle Blowout
+        const cakeArea = document.getElementById('luxCakeWrapper') || document.getElementById('cakeInteractiveArea');
         if (cakeArea) {
             cakeArea.addEventListener('click', () => this.blowOutCandle());
         }
 
-        // Final Celebration Button
+        // Final Celebration Button & Auto Rolling Photos
         const finalCelebrateBtn = document.getElementById('finalCelebrateBtn');
         if (finalCelebrateBtn) {
             finalCelebrateBtn.addEventListener('click', () => {
@@ -370,7 +374,26 @@ class PhysicalBookController {
                 if (this.photoRoller) {
                     this.photoRoller.triggerAfterSparkles();
                 }
-                this.showToast("✨ Celebration sparkles activated! 🎉");
+                this.showToast("✨ Celebration sparkles & auto-rolling photos active! 🎉");
+            });
+        }
+
+        // Finale Gift Icon -> Opens SPX Gift Journey Modal Overlay
+        const finaleGiftIcon = document.getElementById('finaleGiftIcon');
+        if (finaleGiftIcon) {
+            finaleGiftIcon.addEventListener('click', () => this.showGiftJourneyModal());
+        }
+
+        // Close Gift Journey Modal
+        const closeGiftModalBtn = document.getElementById('closeGiftModalBtn');
+        if (closeGiftModalBtn) {
+            closeGiftModalBtn.addEventListener('click', () => this.hideGiftJourneyModal());
+        }
+
+        const giftOverlay = document.getElementById('giftJourneyOverlay');
+        if (giftOverlay) {
+            giftOverlay.addEventListener('click', (e) => {
+                if (e.target === giftOverlay) this.hideGiftJourneyModal();
             });
         }
     }
@@ -558,13 +581,23 @@ class PhysicalBookController {
             }
         }
 
-        // Re-trigger Route map runner if Chapter 5 (Gift Journey)
-        if (chapterNum === 5 && window.effectsController) {
-            setTimeout(() => {
-                if (this.activeTrackingData) {
-                    this.updatePackageRunner(this.activeTrackingData.status);
-                }
-            }, 150);
+        // Re-trigger Route map runner and start live auto-polling if Chapter 5 (Gift Journey)
+        if (chapterNum === 5) {
+            this.loadTrackingData();
+            if (!this.trackingAutoPollInterval) {
+                this.trackingAutoPollInterval = setInterval(() => {
+                    if (this.currentChapter === 5) {
+                        this.loadTrackingData();
+                    }
+                }, 30000);
+            }
+            if (window.effectsController) {
+                setTimeout(() => {
+                    if (this.activeTrackingData) {
+                        this.updatePackageRunner(this.activeTrackingData.status);
+                    }
+                }, 150);
+            }
         }
     }
 
@@ -645,6 +678,24 @@ class PhysicalBookController {
         }
     }
 
+    showGiftJourneyModal() {
+        const overlay = document.getElementById('giftJourneyOverlay');
+        if (!overlay) return;
+
+        overlay.classList.remove('hidden');
+        this.loadTrackingData();
+
+        if (this.soundController) {
+            this.soundController.playSparkleChime();
+        }
+        this.showToast("🚚 Opening SPX Live Tracking & Gift Journey...");
+    }
+
+    hideGiftJourneyModal() {
+        const overlay = document.getElementById('giftJourneyOverlay');
+        if (overlay) overlay.classList.add('hidden');
+    }
+
     async loadTrackingData(overrideParams = {}) {
         const fallbackErrorCard = document.getElementById('fallbackErrorCard');
 
@@ -678,6 +729,12 @@ class PhysicalBookController {
         this.renderTimeline(data.timeline, data.status);
         this.updatePackageRunner(data.status);
         this.updateCountdownTimer(data.estimatedDelivery, data.status);
+
+        const spxLiveSyncText = document.getElementById('spxLiveSyncText');
+        if (spxLiveSyncText) {
+            const timeNow = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            spxLiveSyncText.textContent = `LIVE AUTO-SYNC: Updated ${timeNow} WIB`;
+        }
 
         const celebrationBox = document.getElementById('deliveredCelebrationBox');
         if (data.status === 'DELIVERED') {
@@ -818,7 +875,7 @@ class PhysicalBookController {
     }
 
     promptChangeTrackingNumber() {
-        const currentNum = document.getElementById('infoTrackingNum')?.textContent || 'SPX9284719283ID';
+        const currentNum = document.getElementById('infoTrackingNum')?.textContent || 'SPXID065232769239';
         const inputNum = prompt('Enter your live Shopee Xpress (SPX) tracking number:', currentNum);
         if (inputNum && inputNum.trim() !== '') {
             const cleanNum = inputNum.trim();
@@ -848,24 +905,40 @@ class PhysicalBookController {
     }
 
     blowOutCandle() {
-        const flame = document.getElementById('candleFlame');
+        const flames = document.querySelectorAll('.candle-flame');
         const wishToast = document.getElementById('wishToast');
-        if (flame) flame.classList.add('blown-out');
-        if (wishToast) wishToast.classList.remove('hidden');
+        const candleSmoke = document.getElementById('candleSmoke');
 
-        if (this.soundController) {
-            this.soundController.playSparkleChime();
+        let isBlown = false;
+        flames.forEach(f => {
+            if (f.classList.contains('blown-out')) {
+                f.classList.remove('blown-out');
+            } else {
+                f.classList.add('blown-out');
+                isBlown = true;
+            }
+        });
+
+        if (isBlown) {
+            if (wishToast) {
+                wishToast.textContent = "🎉 Happy 19th Birthday! ✨ May your 19th year be magical & full of joy! ❤️";
+                wishToast.classList.remove('hidden');
+            }
+            if (candleSmoke) {
+                candleSmoke.classList.remove('hidden');
+                setTimeout(() => candleSmoke.classList.add('hidden'), 2500);
+            }
+            if (this.soundController) {
+                this.soundController.playSparkleChime();
+            }
+            if (window.effectsController) {
+                window.effectsController.triggerSparklesAroundElement('#luxCakeWrapper');
+            }
+            this.showToast("🎂 Happy 19th Birthday! Wish made & candles blown out ✨");
+        } else {
+            if (wishToast) wishToast.classList.add('hidden');
+            this.showToast("🔥 19th Birthday candles relit! Make another wish ✨");
         }
-
-        if (window.effectsController) {
-            window.effectsController.triggerSparklesAroundElement('.cake-visual');
-        }
-
-        if (this.photoRoller) {
-            this.photoRoller.triggerAfterSparkles();
-        }
-
-        this.showToast("🎂 Make a wish! Your candle has been blown out ✨");
     }
 
     showToast(message) {
@@ -978,7 +1051,7 @@ class PhotoRollerController {
         if (!track || this.photos.length === 0) return;
 
         track.innerHTML = '';
-        const scrollDuration = Math.max(50, this.photos.length * 2.8);
+        const scrollDuration = Math.max(140, this.photos.length * 6.5);
         track.style.animationDuration = `${scrollDuration}s`;
 
         const displayList = [...this.photos, ...this.photos, ...this.photos];
@@ -1014,7 +1087,16 @@ class PhotoRollerController {
         const overlay = document.getElementById('photoRollerOverlay');
         if (!overlay) return;
 
-        this.scanAssetsFolder().then(() => this.renderFilmStrip());
+        this.scanAssetsFolder().then(() => {
+            this.renderFilmStrip();
+            const track = document.getElementById('filmStripTrack');
+            if (track) {
+                track.style.animation = 'none';
+                void track.offsetWidth;
+                const dur = Math.max(140, this.photos.length * 6.5);
+                track.style.animation = `filmReelScroll ${dur}s linear infinite`;
+            }
+        });
 
         overlay.classList.remove('hidden');
         if (this.app && this.app.soundController) {
