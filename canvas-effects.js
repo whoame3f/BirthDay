@@ -40,18 +40,59 @@ class VisualEffectsController {
         }
 
         if (this.routeCanvas && this.routeCanvas.parentElement) {
-            this.routeCanvas.width = this.routeCanvas.parentElement.clientWidth;
-            this.routeCanvas.height = this.routeCanvas.parentElement.clientHeight;
+            const w = this.routeCanvas.parentElement.clientWidth;
+            const h = this.routeCanvas.parentElement.clientHeight;
+            if (w > 0 && h > 0) {
+                this.routeCanvas.width = w;
+                this.routeCanvas.height = h;
+            }
         }
 
-        if (this.tulipCanvas && this.tulipCanvas.parentElement) {
-            this.tulipCanvas.width = this.tulipCanvas.parentElement.clientWidth;
-            this.tulipCanvas.height = this.tulipCanvas.parentElement.clientHeight;
-        }
+        this.ensureTulipCanvasSize();
 
         if (this.celebrationCanvas && this.celebrationCanvas.parentElement) {
-            this.celebrationCanvas.width = this.celebrationCanvas.parentElement.clientWidth;
-            this.celebrationCanvas.height = this.celebrationCanvas.parentElement.clientHeight;
+            const w = this.celebrationCanvas.parentElement.clientWidth;
+            const h = this.celebrationCanvas.parentElement.clientHeight;
+            if (w > 0 && h > 0) {
+                this.celebrationCanvas.width = w;
+                this.celebrationCanvas.height = h;
+            }
+        }
+    }
+
+    ensureTulipCanvasSize() {
+        if (!this.tulipCanvas || !this.tulipCanvas.parentElement) return;
+        const parent = this.tulipCanvas.parentElement;
+        const w = parent.clientWidth || parent.getBoundingClientRect().width;
+        const h = parent.clientHeight || parent.getBoundingClientRect().height;
+
+        if (w > 0 && h > 0) {
+            const intW = Math.floor(w);
+            const intH = Math.floor(h);
+            if (this.tulipCanvas.width !== intW || this.tulipCanvas.height !== intH) {
+                this.tulipCanvas.width = intW;
+                this.tulipCanvas.height = intH;
+                if (!this.tulips || this.tulips.length === 0 || (this.tulips[0] && this.tulips[0].y <= 0)) {
+                    this.seedDefaultTulips();
+                }
+            }
+        }
+    }
+
+    seedDefaultTulips() {
+        this.tulips = [];
+        const w = this.tulipCanvas.width || 500;
+        const h = this.tulipCanvas.height || 300;
+
+        for (let i = 0; i < 5; i++) {
+            this.tulips.push({
+                x: (w / 6) * (i + 1),
+                y: h - 25,
+                stemHeight: 0,
+                maxStemHeight: Math.random() * 35 + 55,
+                bloomProgress: 0,
+                color: ['#ff758c', '#c77dff', '#ffd166', '#ff4d6d', '#ff85a1'][i % 5]
+            });
         }
     }
 
@@ -74,35 +115,30 @@ class VisualEffectsController {
 
     initTulipGarden() {
         if (!this.tulipCanvas) return;
-        this.tulips = [];
+        this.ensureTulipCanvasSize();
+        if (!this.tulips || this.tulips.length === 0) {
+            this.seedDefaultTulips();
+        }
 
-        this.tulipCanvas.addEventListener('click', (e) => {
+        const plantTulip = (clientX, clientY) => {
+            this.ensureTulipCanvasSize();
             const rect = this.tulipCanvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
 
             this.tulips.push({
                 x,
                 y,
                 stemHeight: 0,
-                maxStemHeight: Math.random() * 40 + 60,
+                maxStemHeight: Math.random() * 40 + 65,
                 bloomProgress: 0,
-                color: ['#ff758c', '#c77dff', '#ffd166', '#ff4d6d'][Math.floor(Math.random() * 4)]
+                color: ['#ff758c', '#c77dff', '#ffd166', '#ff4d6d', '#ff85a1'][Math.floor(Math.random() * 5)]
             });
-        });
+        };
 
-        for (let i = 0; i < 4; i++) {
-            const w = this.tulipCanvas.width || 600;
-            const h = this.tulipCanvas.height || 280;
-            this.tulips.push({
-                x: (w / 5) * (i + 1),
-                y: h - 30,
-                stemHeight: 0,
-                maxStemHeight: Math.random() * 30 + 50,
-                bloomProgress: 0,
-                color: ['#ff758c', '#c77dff', '#ffd166'][i % 3]
-            });
-        }
+        this.tulipCanvas.addEventListener('pointerdown', (e) => {
+            plantTulip(e.clientX, e.clientY);
+        });
     }
 
     drawRoute(currentStatus) {
@@ -141,6 +177,8 @@ class VisualEffectsController {
 
     drawTulips() {
         if (!this.tulipCtx || !this.tulipCanvas) return;
+
+        this.ensureTulipCanvasSize();
 
         this.tulipCtx.clearRect(0, 0, this.tulipCanvas.width, this.tulipCanvas.height);
 

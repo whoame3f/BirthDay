@@ -376,6 +376,12 @@ class PhysicalBookController {
                 tulipContainer.classList.add('emerge-from-fold');
                 setTimeout(() => tulipContainer.classList.add('emerged'), 100);
             }
+            if (window.effectsController) {
+                setTimeout(() => {
+                    window.effectsController.ensureTulipCanvasSize();
+                    window.effectsController.resizeCanvases();
+                }, 120);
+            }
         } else if (chapterNum === 6) {
             const cakeArea = document.getElementById('cakeInteractiveArea');
             if (cakeArea) {
