@@ -38,7 +38,7 @@ class TrackingService {
         } catch (primaryErr) {
             try {
                 // Try fallback to static JSON asset (for static deployment hosts like Vercel)
-                const fallbackResponse = await fetch('./api/tracking.json');
+                const fallbackResponse = await fetch('./api/tracking_static.json');
                 if (fallbackResponse.ok) {
                     return await fallbackResponse.json();
                 }
