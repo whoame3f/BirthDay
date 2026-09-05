@@ -486,15 +486,7 @@ body {
 
 /* Soft Natural Spine Crease Depth (Zero lines, zero borders) */
 .center-fold-binding {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.18) 0%, transparent 85%);
-    z-index: 20;
-    pointer-events: none;
+    display: none !important;
 }
 
 /* ==========================================================================
@@ -624,11 +616,7 @@ body {
 }
 
 .sheet-crease-shadow {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at left, rgba(0, 0, 0, 0.3) 0%, transparent 70%);
-    opacity: 0;
-    pointer-events: none;
+    display: none !important;
 }
 
 /* Side Navigation Arrows */
